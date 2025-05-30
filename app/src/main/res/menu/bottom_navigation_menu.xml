@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/nav_home"
+        android:id="@+id/homeFragment"
         android:icon="@drawable/ic_home"
         android:title="Trang chủ" />
 
@@ -21,7 +21,7 @@
         android:title="Kênh đăng ký" />
 
     <item
-        android:id="@+id/nav_library"
+        android:id="@+id/libaryFragment"
         android:icon="@drawable/ic_library"
         android:title="Thư viện" />
 </menu>
