@@ -16,11 +16,6 @@
         android:title="" />
 
     <item
-        android:id="@+id/nav_subscriptions"
-        android:icon="@drawable/ic_subscriptions"
-        android:title="Kênh đăng ký" />
-
-    <item
         android:id="@+id/libaryFragment"
         android:icon="@drawable/ic_library"
         android:title="Thư viện" />
