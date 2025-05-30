@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:navGraph="@navigation/youtobe_home_graph"
+        app:navGraph="@navigation/youtube_home_graph"
         app:defaultNavHost="true" />
 
     <!-- Bottom Navigation -->
