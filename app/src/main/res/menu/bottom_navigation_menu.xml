@@ -11,11 +11,6 @@
         android:title="Shorts" />
 
     <item
-        android:id="@+id/nav_add"
-        android:icon="@drawable/ic_add"
-        android:title="" />
-
-    <item
         android:id="@+id/libaryFragment"
         android:icon="@drawable/ic_library"
         android:title="Thư viện" />
