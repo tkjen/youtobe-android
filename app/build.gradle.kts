@@ -53,6 +53,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -79,4 +81,11 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
     //WebView
     implementation("androidx.webkit:webkit:1.8.0")
+    //Shimmer
+    implementation ("com.facebook.shimmer:shimmer:0.5.0")
+    //
+    implementation ("com.google.android.material:material:1.10.0")
+
+    //
+    implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:chromecast-sender:0.30")
 }

@@ -1,9 +1,53 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Youtubeclone" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Base.Theme.Youtubeclone" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/youtube_red</item>
+        <item name="colorPrimaryVariant">@color/youtube_red</item> <!-- Hoặc một sắc độ khác của youtube_red -->
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/youtube_red</item> <!-- Hoặc một màu phụ khác -->
+        <item name="colorSecondaryVariant">@color/youtube_red</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <!-- Background and Surface colors -->
+        <item name="android:colorBackground">@color/app_bg_color</item>
+        <item name="colorSurface">@color/app_surface_color</item>
+        <item name="colorOnBackground">@color/app_text_primary</item>
+        <item name="colorOnSurface">@color/app_text_primary</item>
+
+        <!-- Error color -->
+        <item name="colorError">@android:color/holo_red_dark</item>
+        <item name="colorOnError">@color/white</item>
+
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@color/app_text_primary</item>
+        <item name="android:textColorSecondary">@color/app_text_secondary</item>
+
+        <!-- Status Bar and Navigation Bar -->
+        <item name="android:statusBarColor">@color/app_surface_color</item> <!-- Hoặc @color/app_bg_color -->
+        <item name="android:navigationBarColor">@color/bottom_nav_background</item>
+        <item name="android:windowLightStatusBar">true</item> <!-- Icons trên status bar sẽ tối (cho light theme) -->
+
+        <!-- Window Background -->
+        <item name="android:windowBackground">@color/app_bg_color</item>
+
+        <!-- BottomNavigationView Style (Ví dụ) -->
+        <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
     </style>
 
     <style name="Theme.Youtubeclone" parent="Base.Theme.Youtubeclone" />
+
+    <!-- Style cho BottomNavigationView (Ví dụ) -->
+    <style name="Widget.App.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
+        <item name="itemIconTint">@color/bottom_nav_selector</item>
+        <item name="itemTextColor">@color/bottom_nav_selector</item>
+        <item name="android:background">@color/bottom_nav_background</item>
+    </style>
+
+    <style name="ThemeOverlay.App.BottomNavigationView" parent="">
+        <item name="colorPrimary">@color/bottom_nav_item_selected</item>
+        <item name="colorOnSurface">@color/bottom_nav_item_unselected</item>
+    </style>
 </resources>
