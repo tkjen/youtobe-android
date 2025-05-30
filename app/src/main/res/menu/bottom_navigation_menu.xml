@@ -3,7 +3,7 @@
     <item
         android:id="@+id/homeFragment"
         android:icon="@drawable/ic_home"
-        android:title="Trang chủ" />
+        android:title="Home" />
 
     <item
         android:id="@+id/nav_shorts"
@@ -13,5 +13,5 @@
     <item
         android:id="@+id/libaryFragment"
         android:icon="@drawable/ic_library"
-        android:title="Thư viện" />
+        android:title="Libarry" />
 </menu>

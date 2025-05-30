@@ -50,4 +50,22 @@
         <item name="colorPrimary">@color/bottom_nav_item_selected</item>
         <item name="colorOnSurface">@color/bottom_nav_item_unselected</item>
     </style>
+    <!-- Style cho Toolbar -->
+    <style name="Widget.App.Toolbar.Dark" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">#0F0F0F</item> <!-- Màu nền đen cố định -->
+        <item name="titleTextColor">#FFFFFF</item>    <!-- Màu chữ tiêu đề (nếu Toolbar có title) -->
+        <item name="subtitleTextColor">#AAAAAA</item> <!-- Màu chữ phụ đề (nếu có) -->
+        <!-- Các thuộc tính khác bạn muốn cố định cho dark mode -->
+    </style>
+    <!-- Định nghĩa toolbarTitleTextAppearance -->
+
+    <style name="Widget.App.Toolbar.Dark.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="Widget.App.Toolbar.Dark.Icon">
+        <item name="android:tint">#FFFFFF</item> <!-- Tint màu trắng cho icon -->
+    </style>
 </resources>

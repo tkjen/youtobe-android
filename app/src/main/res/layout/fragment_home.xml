@@ -3,69 +3,79 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#0F0F0F"
+    android:background="?attr/colorSurface"
     >
 
     <!-- AppBar -->
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorSurface"
+    android:layout_marginTop="10dp"
+    app:elevation="0dp">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#0F0F0F"
-        android:layout_marginTop="10dp"
-        app:elevation="0dp">
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorSurface"
+    app:contentInsetStart="0dp"
+    app:titleTextColor="?android:attr/textColorPrimary"
+    app:subtitleTextColor="?android:attr/textColorSecondary">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="#0F0F0F"
-            app:contentInsetStart="0dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingHorizontal="16dp">
+        <!-- Logo -->
+        <ImageView
+            android:id="@+id/iv_youtube_logo"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_youtube_logo"
+            android:layout_marginEnd="8dp"
+            />
 
-                <!-- Logo -->
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_youtube_logo"
-                    android:layout_marginEnd="8dp" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="YouTube"
-                    android:textColor="#FFFFFF"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:fontFamily="sans-serif-medium" />
+        <TextView
+            android:id="@+id/tv_toolbar_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="YouTube"
+            android:textColor="?android:attr/textColorPrimary"
+        android:textSize="20sp"
+        android:fontFamily="sans-serif-medium"
+        />
 
-                <!-- Search -->
-                <ImageView
-                    android:id="@+id/ic_search"
-                    android:layout_width="34dp"
-                    android:layout_height="34dp"
-                    android:src="@drawable/ic_search"
-                    android:layout_marginEnd="16dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="8dp" />
 
-                <!-- Profile -->
-                <ImageView
-                    android:id="@+id/ic_profile"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_profile"
-                    android:background="@drawable/circle_background"
-                    android:scaleType="centerCrop" />
+        <!-- Search -->
+        <ImageView
+            android:id="@+id/ic_search"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:src="@drawable/ic_search"
+            android:layout_marginEnd="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            app:tint="?android:attr/textColorPrimary" /> <!-- TINT ICON THEO THEME -->
 
-            </LinearLayout>
-        </androidx.appcompat.widget.Toolbar>
+        <!-- Profile -->
+        <ImageView
+            android:id="@+id/ic_profile"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_profile"
+            android:background="@drawable/circle_background"
+        android:scaleType="centerCrop" />
+
+
+    </LinearLayout>
+</androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
     <!-- Content Area -->
     <androidx.core.widget.NestedScrollView
