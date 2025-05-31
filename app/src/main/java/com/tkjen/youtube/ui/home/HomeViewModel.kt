@@ -20,29 +20,32 @@ class HomeViewModel @Inject constructor(
     private val repository: YoutubeRepository
 ): ViewModel() {
 
-
     private val _videos = MutableStateFlow<Result<List<VideoItem>>>(Result.Loading)
     val videos: StateFlow<Result<List<VideoItem>>> = _videos.asStateFlow()
 
+    val isDataLoaded: Boolean
+        get() = _videos.value is Result.Success
 
     fun loadVideos(videoIds: List<String>) {
+        if (isDataLoaded) return
 
         viewModelScope.launch {
             _videos.value = Result.Loading
-            delay(2000)
             try {
                 val response = repository.getVideoDetails(videoIds)
                 _videos.value = Result.Success(response.items)
-
             } catch (e: Exception) {
                 _videos.value = Result.Error("Failed to load videos: ${e.message}")
             }
         }
     }
+
     fun loadPopularVideos() {
+        if (isDataLoaded) return
+
         viewModelScope.launch {
             _videos.value = Result.Loading
-            delay(1000) // có thể giữ để shimmer đẹp hơn
+            delay(1000)
             try {
                 val items = repository.getPopularVideos()
                 _videos.value = Result.Success(items)
@@ -51,6 +54,4 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
-
-
 }

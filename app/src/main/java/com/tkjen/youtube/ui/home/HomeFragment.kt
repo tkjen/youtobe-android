@@ -55,8 +55,7 @@ class HomeFragment: Fragment(R.layout.fragment_home) {
         Log.d("HomeFragment", "Calling loadVideos with IDs: $sampleVideoIds")
        // viewModel.loadVideos(sampleVideoIds)
 
-
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.videos.collectLatest { result ->
                 when (result) {
                     is Result.Loading -> {
