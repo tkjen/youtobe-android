@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_marginBottom="16dp"
-    android:background="#0F0F0F"
+    android:background="?attr/colorSurface"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground">
@@ -14,7 +14,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginHorizontal="12dp">
+       >
 
         <!-- Video Thumbnail -->
         <ImageView

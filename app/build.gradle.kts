@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -17,6 +19,27 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        val youtubeApiKey: String? = if (project.hasProperty("YOUTUBE_API_KEY")) {
+            project.property("YOUTUBE_API_KEY") as String
+        } else {
+            val localPropertiesFile = rootProject.file("local.properties")
+            if (localPropertiesFile.exists()) {
+                val props = Properties()
+                props.load(localPropertiesFile.inputStream())
+                props.getProperty("YOUTUBE_API_KEY")
+            } else null
+        }
+
+        println(">>> [BUILD.GRADLE] YOUTUBE_API_KEY = $youtubeApiKey")
+
+        android {
+            defaultConfig {
+                youtubeApiKey?.let {
+                    buildConfigField("String", "YOUTUBE_API_KEY", "\"$it\"")
+                }
+            }
+        }
+
     }
 
     buildTypes {
@@ -88,4 +111,9 @@ dependencies {
 
     //
     implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:chromecast-sender:0.30")
+
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 }
