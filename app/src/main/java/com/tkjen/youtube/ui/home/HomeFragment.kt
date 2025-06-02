@@ -1,7 +1,6 @@
 package com.tkjen.youtube.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,32 +28,28 @@ class HomeFragment: Fragment(R.layout.fragment_home) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d("HomeFragment", "onCreateView called")
+
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("HomeFragment", "onViewCreated called")
 
+        eventClick()
+        loadPopularVideos()
+
+    }
+
+    private fun eventClick() {
         binding.icProfile.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_settingsFragment)
         }
-        Log.d("HomeFragment", "Adapter and LayoutManager set to RecyclerView")
+    }
+
+    fun loadPopularVideos() {
         binding.recyclerViewVideos.adapter = videoAdapter
         binding.recyclerViewVideos.layoutManager = LinearLayoutManager(requireContext())
-        Log.d("HomeFragment", "Adapter set to RecyclerView")
-
-        // Load videos
-        val sampleVideoIds = listOf(
-            "dQw4w9WgXcQ",  // Sử dụng ID video hợp lệ để test
-            "jNQXAC9IVRw",
-            "kJQP7kiw5Fk"
-        )
-        Log.d("HomeFragment", "Calling loadVideos with IDs: $sampleVideoIds")
-       // viewModel.loadVideos(sampleVideoIds)
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.videos.collectLatest { result ->
                 when (result) {
@@ -80,6 +75,18 @@ class HomeFragment: Fragment(R.layout.fragment_home) {
             }
         }
         viewModel.loadPopularVideos()
-
     }
+
+    fun loadSample()
+    {
+        val sampleVideoIds = listOf(
+            "dQw4w9WgXcQ",  // Sử dụng ID video hợp lệ để test
+            "jNQXAC9IVRw",
+            "kJQP7kiw5Fk"
+        )
+         viewModel.loadVideos(sampleVideoIds)
+    }
+
 }
+
+
