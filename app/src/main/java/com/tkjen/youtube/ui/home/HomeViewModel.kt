@@ -1,9 +1,8 @@
 package com.tkjen.youtube.ui.home
 
-import android.util.Log
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.facebook.shimmer.BuildConfig
 import com.tkjen.youtube.data.model.VideoItem
 import com.tkjen.youtube.data.repository.YoutubeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,6 +25,15 @@ class HomeViewModel @Inject constructor(
     val isDataLoaded: Boolean
         get() = _videos.value is Result.Success
 
+    private var nextPageToken: String? = null
+    private val allVideos = mutableListOf<VideoItem>()
+    private var isLoadingMore = false
+
+
+    fun loadInitialVideos() {
+        if (allVideos.isNotEmpty()) return
+        loadMoreVideos()
+    }
     fun loadVideos(videoIds: List<String>) {
         if (isDataLoaded) return
 
@@ -51,6 +59,23 @@ class HomeViewModel @Inject constructor(
                 _videos.value = Result.Success(items)
             } catch (e: Exception) {
                 _videos.value = Result.Error("Failed to load videos: ${e.message}")
+            }
+        }
+    }
+    fun loadMoreVideos() {
+        if (isLoadingMore) return
+        isLoadingMore = true
+
+        viewModelScope.launch {
+            try {
+                val response = repository.getPopularVideosPagination(nextPageToken)
+                allVideos.addAll(response.items)
+                nextPageToken = response.nextPageToken
+                _videos.value = Result.Success(allVideos)
+            } catch (e: Exception) {
+                _videos.value = Result.Error("Load failed: ${e.message}")
+            } finally {
+                isLoadingMore = false
             }
         }
     }

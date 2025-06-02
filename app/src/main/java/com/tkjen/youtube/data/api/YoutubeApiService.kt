@@ -20,6 +20,7 @@ interface YoutubeApiService {
         @Query("chart") chart: String = "mostPopular",
         @Query("regionCode") regionCode: String = "VN",
         @Query("maxResults") maxResults: Int = 20,
+        @Query("pageToken") pageToken: String? = null,
         @Query("key") apiKey: String
     ): VideoListResponse
 

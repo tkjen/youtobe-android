@@ -22,7 +22,8 @@ data class Snippet(
     val channelTitle: String
 )
 data class VideoListResponse(
-    val items: List<VideoItem>
+    val items: List<VideoItem>,
+    val nextPageToken: String?
 )
 
 

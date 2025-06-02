@@ -4,20 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.tkjen.youtube.R
 import com.tkjen.youtube.databinding.FragmentHomeBinding
 import com.tkjen.youtube.ui.home.adapter.VideoAdapter
+import com.tkjen.youtube.utils.Result
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import com.tkjen.youtube.utils.Result
+
 @AndroidEntryPoint
-class HomeFragment: Fragment(R.layout.fragment_home) {
+class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private lateinit var binding: FragmentHomeBinding
     private val videoAdapter = VideoAdapter()
@@ -28,7 +31,6 @@ class HomeFragment: Fragment(R.layout.fragment_home) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -36,9 +38,16 @@ class HomeFragment: Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        eventClick()
-        loadPopularVideos()
+        // Setup RecyclerView
+        binding.recyclerViewVideos.apply {
+            adapter = videoAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+            addOnScrollListener(scrollListener)
+        }
 
+        eventClick()
+        observeData()
+        viewModel.loadPopularVideos()
     }
 
     private fun eventClick() {
@@ -47,9 +56,19 @@ class HomeFragment: Fragment(R.layout.fragment_home) {
         }
     }
 
-    fun loadPopularVideos() {
-        binding.recyclerViewVideos.adapter = videoAdapter
-        binding.recyclerViewVideos.layoutManager = LinearLayoutManager(requireContext())
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+            val totalItemCount = layoutManager.itemCount
+            val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+
+            if (lastVisibleItem >= totalItemCount - 5) {
+                viewModel.loadMoreVideos()
+            }
+        }
+    }
+
+    private fun observeData() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.videos.collectLatest { result ->
                 when (result) {
@@ -70,23 +89,19 @@ class HomeFragment: Fragment(R.layout.fragment_home) {
                         binding.shimmerViewContainer.stopShimmer()
                         binding.shimmerViewContainer.visibility = View.GONE
                         binding.recyclerViewVideos.visibility = View.VISIBLE
+                        Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         }
-        viewModel.loadPopularVideos()
     }
 
-    fun loadSample()
-    {
+    fun loadSample() {
         val sampleVideoIds = listOf(
-            "dQw4w9WgXcQ",  // Sử dụng ID video hợp lệ để test
+            "dQw4w9WgXcQ",
             "jNQXAC9IVRw",
             "kJQP7kiw5Fk"
         )
-         viewModel.loadVideos(sampleVideoIds)
+        viewModel.loadVideos(sampleVideoIds)
     }
-
 }
-
-

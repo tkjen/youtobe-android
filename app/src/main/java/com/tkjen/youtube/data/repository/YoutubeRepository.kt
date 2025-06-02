@@ -3,6 +3,7 @@ package com.tkjen.youtube.data.repository
 import android.util.Log
 import com.tkjen.youtube.data.api.YoutubeApiService
 import com.tkjen.youtube.data.model.VideoItem
+import com.tkjen.youtube.data.model.VideoListResponse
 import com.tkjen.youtube.data.model.YoutubeResponse
 import javax.inject.Inject
 import javax.inject.Named
@@ -12,7 +13,6 @@ class YoutubeRepository @Inject constructor(
     @Named("youtube_api_key") private val apiKey: String
 ) {
     suspend fun getVideoDetails(videoIds: List<String>): YoutubeResponse {
-        Log.d("YoutubeRepository", "Getting video details for IDs: $videoIds")
         Log.d("YoutubeRepository", "Using API key: ${apiKey.take(5)}...")
         
         val response = apiService.getVideoDetails(
@@ -27,6 +27,12 @@ class YoutubeRepository @Inject constructor(
         val response = apiService.getPopularVideos(apiKey = apiKey)
         Log.d("YoutubeRepository", "Fetched ${response.items.size} popular videos")
         return response.items
+    }
+    suspend fun getPopularVideosPagination(pageToken: String?): VideoListResponse {
+        return apiService.getPopularVideos(
+            pageToken = pageToken,
+            apiKey = apiKey
+        )
     }
 
 }
