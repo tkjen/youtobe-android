@@ -26,8 +26,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private lateinit var binding: FragmentHomeBinding
 
-    private val videoAdapter = VideoAdapter()
-    private val viewModel: HomeViewModel by viewModels()
+
     private lateinit var viewPagerAdapter: CategoryViewPagerAdapter
 
     private val categories = listOf(
@@ -61,17 +60,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
-    private val scrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-            val totalItemCount = layoutManager.itemCount
-            val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
 
-            if (lastVisibleItem >= totalItemCount - 5) {
-                viewModel.loadMoreVideos()
-            }
-        }
-    }
 
     private fun setupViewPager() {
         viewPagerAdapter = CategoryViewPagerAdapter(requireActivity(), categories)

@@ -5,36 +5,43 @@
     android:id="@+id/youtube_home_graph"
     app:startDestination="@id/homeFragment">
 
-        <fragment
-            android:id="@+id/homeFragment"
-            android:name="com.tkjen.youtube.ui.home.HomeFragment"
-            android:label="HomeFragment"
-            tools:layout="@layout/fragment_home"
-            >
-            <action
-                android:id="@+id/action_homeFragment_to_videoDetailsFragment"
-                app:destination="@id/videoDetailsFragment" />
-            <action
-                android:id="@+id/action_homeFragment_to_settingsFragment"
-                app:destination="@id/settingsFragment" />
-
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.tkjen.youtube.ui.home.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_videoDetailsFragment"
+            app:destination="@id/videoDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/videoDetailsFragment"
         android:name="com.tkjen.youtube.ui.video_details.VideoDetailsFragment"
         android:label="VideoDetailsFragment"
-        tools:layout="@layout/fragment_video_details"
-        />
+        tools:layout="@layout/fragment_video_details">
+        <argument
+            android:name="videoId"
+            app:argType="string" />
+    </fragment>
+
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.tkjen.youtube.ui.settings.SettingsFragment"
         android:label="SettingsFragment"
-        tools:layout="@layout/fragment_settings"
-        />
+        tools:layout="@layout/fragment_settings" />
+
     <fragment
         android:id="@+id/libaryFragment"
         android:name="com.tkjen.youtube.ui.libary.LibaryFragment"
         android:label="LibaryFragment"
-        tools:layout="@layout/fragment_libary"
-        />
+        tools:layout="@layout/fragment_libary">
+        <action
+            android:id="@+id/action_libaryFragment_to_videoDetailsFragment"
+            app:destination="@id/videoDetailsFragment" />
+    </fragment>
+
 </navigation>

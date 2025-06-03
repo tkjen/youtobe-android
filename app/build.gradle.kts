@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -39,7 +40,6 @@ android {
                 }
             }
         }
-
     }
 
     buildTypes {
@@ -63,14 +63,15 @@ android {
         viewBinding = true
     }
 }
+
 val lifecycle_version = "2.9.0"
 val arch_version = "2.2.0"
 val fragment_version = "1.8.6"
 val room_version = "2.7.1"
-val hilt_version = "2.51.1" // Sửa phiên bản
+val hilt_version = "2.51.1"
+val nav_version = "2.9.0"
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -81,42 +82,58 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
+    
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
     // LiveData
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
     // Lifecycles only (without ViewModel or LiveData)
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
+    
     //Fragment
     implementation("androidx.fragment:fragment-ktx:$fragment_version")
-    // Hilt (Dùng KSP)
+    
+    // Hilt
     implementation("com.google.dagger:hilt-android:$hilt_version")
     ksp("com.google.dagger:hilt-android-compiler:$hilt_version")
+    
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    
     //Room
     implementation("androidx.room:room-runtime:$room_version")
-    ksp("androidx.room:room-compiler:$room_version") // CHỈ DÙNG KSP
+    ksp("androidx.room:room-compiler:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
+    
     //WebView
     implementation("androidx.webkit:webkit:1.8.0")
+    
     //Shimmer
-    implementation ("com.facebook.shimmer:shimmer:0.5.0")
-    //
-    implementation ("com.google.android.material:material:1.10.0")
-
-    //
-    implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:chromecast-sender:0.30")
-    //Gilide
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
+    
+    //Material Design
+    implementation("com.google.android.material:material:1.10.0")
+    
+    //YouTube Player
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:chromecast-sender:0.30")
+    
+    //Glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+    
     //OkHttp
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    
     //ViewPager2
     implementation("androidx.viewpager2:viewpager2:1.1.0")
+    
+    //Navigation
+    implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
+    implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
 }

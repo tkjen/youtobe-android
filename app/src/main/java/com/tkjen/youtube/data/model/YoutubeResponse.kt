@@ -6,12 +6,12 @@ data class YoutubeResponse(
 )
 
 data class VideoItem(
-
     val id: String,
     val snippet: Snippet, // Thường snippet luôn có
     val contentDetails: ContentDetails?, // Cho phép null
     val statistics: Statistics? // Cho phép null
 )
+
 data class SearchResponse(
     val items: List<SearchItem>,
     val nextPageToken: String?
@@ -27,7 +27,6 @@ data class SearchItemId(
     val videoId: String
 )
 
-
 data class Snippet(
     val publishedAt: String,
     val channelId: String,
@@ -36,18 +35,16 @@ data class Snippet(
     val thumbnails: Thumbnails,
     val channelTitle: String
 )
+
 data class VideoListResponse(
     val items: List<VideoItem>,
     val nextPageToken: String?
 )
 
-
 data class Thumbnails(
     val default: Thumbnail?, // Cho phép null nếu có khả năng thiếu
     val medium: Thumbnail?,
     val high: Thumbnail?
-    // val standard: Thumbnail?,
-    // val maxres: Thumbnail?
 )
 
 data class Thumbnail(
@@ -61,9 +58,10 @@ data class ContentDetails(
 )
 
 data class Statistics(
-    val viewCount: String?, // Cho phép null
+    val viewCount: String?,
     val likeCount: String?,
-    val commentCount: String?
+    val commentCount: String?,
+    val subscriberCount: String?
 )
 
 data class PageInfo(

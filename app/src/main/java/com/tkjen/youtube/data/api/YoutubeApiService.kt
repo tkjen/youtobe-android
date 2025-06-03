@@ -24,7 +24,6 @@ interface YoutubeApiService {
         @Query("maxResults") maxResults: Int = 20,
         @Query("pageToken") pageToken: String? = null,
         @Query("videoCategoryId") videoCategoryId: String? = null,
-//        @Query("videoDuration") videoDuration: String = "long", // Filter out Shorts
         @Query("key") apiKey: String
     ): VideoListResponse
 

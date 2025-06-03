@@ -1,9 +1,13 @@
 // VideoAdapter.kt
 package com.tkjen.youtube.ui.home.adapter // Hoặc package hiện tại của bạn
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter // DiffUtil không cần import trực tiếp ở đây nữa
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tkjen.youtube.R
@@ -13,9 +17,7 @@ import com.tkjen.youtube.utils.formatDuration
 import com.tkjen.youtube.utils.formatTimeAgo
 import com.tkjen.youtube.utils.formatViewCount
 
-
-class VideoAdapter(private val onItemClicked: ((VideoItem) -> Unit)? = null) :
-    ListAdapter<VideoItem, VideoAdapter.VideoViewHolder>(VideoDiffCallback()) { // Sử dụng VideoDiffCallback đã tách
+class VideoAdapter : ListAdapter<VideoItem, VideoAdapter.VideoViewHolder>(VideoDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
         val binding = ItemVideoBinding.inflate(
@@ -23,7 +25,7 @@ class VideoAdapter(private val onItemClicked: ((VideoItem) -> Unit)? = null) :
             parent,
             false
         )
-        return VideoViewHolder(binding, onItemClicked)
+        return VideoViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
@@ -35,8 +37,7 @@ class VideoAdapter(private val onItemClicked: ((VideoItem) -> Unit)? = null) :
     // hoặc cũng có thể tách ra file riêng nếu nó quá lớn.
     // Hiện tại để nó ở đây vẫn ổn.
     class VideoViewHolder(
-        private val binding: ItemVideoBinding,
-        private val onItemClicked: ((VideoItem) -> Unit)?
+        private val binding: ItemVideoBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(video: VideoItem) {
@@ -61,16 +62,48 @@ class VideoAdapter(private val onItemClicked: ((VideoItem) -> Unit)? = null) :
                     .load(R.drawable.placeholder_avatar)
                     .circleCrop()
                     .into(imgChannelAvatar)
+
                 imgMenu.setOnClickListener {
-
+                    // Handle menu click
                 }
+
                 itemView.setOnClickListener {
-                    onItemClicked?.invoke(video)
-                }
+                    // Log để debug
+                    Log.d("VideoAdapter", "Video ID: ${video.id}")
+                    Log.d("VideoAdapter", "Video Title: ${video.snippet.title}")
 
+                    val navController = itemView.findNavController()
+                    val currentDestination = navController.currentDestination
+
+                    // Đảm bảo video.id không null
+                    val videoId = video.id
+                    Log.d("VideoAdapter", "Navigating to video with ID: $videoId")
+
+                    when (currentDestination?.id) {
+                        R.id.homeFragment -> {
+                            val action = com.tkjen.youtube.ui.home.HomeFragmentDirections
+                                .actionHomeFragmentToVideoDetailsFragment(videoId)
+                            navController.navigate(action)
+                        }
+                        R.id.libaryFragment -> {
+                            val action = com.tkjen.youtube.ui.libary.LibaryFragmentDirections
+                                .actionLibaryFragmentToVideoDetailsFragment(videoId)
+                            navController.navigate(action)
+                        }
+                        else -> {
+                            // Fallback navigation if the current fragment doesn't have a specific action
+                            val action = com.tkjen.youtube.ui.home.HomeFragmentDirections
+                                .actionHomeFragmentToVideoDetailsFragment(videoId)
+                            navController.navigate(action)
+                        }
+                    }
+                }
             }
         }
     }
-
-
 }
+
+
+
+
+
