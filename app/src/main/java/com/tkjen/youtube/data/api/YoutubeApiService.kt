@@ -4,7 +4,9 @@ import com.tkjen.youtube.data.model.VideoListResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 import com.tkjen.youtube.data.model.YoutubeResponse
+import com.tkjen.youtube.data.model.SearchResponse
 
+//Giao tiếp với API YouTube
 interface YoutubeApiService {
 
     @GET("videos")
@@ -21,7 +23,18 @@ interface YoutubeApiService {
         @Query("regionCode") regionCode: String = "VN",
         @Query("maxResults") maxResults: Int = 20,
         @Query("pageToken") pageToken: String? = null,
+        @Query("videoCategoryId") videoCategoryId: String? = null,
+//        @Query("videoDuration") videoDuration: String = "long", // Filter out Shorts
         @Query("key") apiKey: String
     ): VideoListResponse
 
+    @GET("search")
+    suspend fun searchVideosByCategory(
+        @Query("part") part: String = "snippet",
+        @Query("type") type: String = "video",
+        @Query("videoCategoryId") videoCategoryId: String,
+        @Query("maxResults") maxResults: Int = 20,
+        @Query("pageToken") pageToken: String? = null,
+        @Query("key") apiKey: String
+    ): SearchResponse
 }

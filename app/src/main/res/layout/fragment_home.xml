@@ -9,74 +9,85 @@
     <!-- AppBar -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?attr/colorSurface"
-    android:layout_marginTop="10dp"
-    app:elevation="0dp">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
         android:background="?attr/colorSurface"
-    app:contentInsetStart="0dp"
-    app:titleTextColor="?android:attr/textColorPrimary"
-    app:subtitleTextColor="?android:attr/textColorSecondary">
+        android:layout_marginTop="10dp"
+        app:elevation="0dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="16dp">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorSurface"
+            app:contentInsetStart="0dp"
+            app:titleTextColor="?android:attr/textColorPrimary"
+            app:subtitleTextColor="?android:attr/textColorSecondary">
 
-        <!-- Logo -->
-        <ImageView
-            android:id="@+id/iv_youtube_logo"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/ic_youtube_logo"
-            android:layout_marginEnd="8dp"
-            />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp">
 
+                <!-- Logo -->
+                <ImageView
+                    android:id="@+id/iv_youtube_logo"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_youtube_logo"
+                    android:layout_marginEnd="8dp" />
 
-        <TextView
-            android:id="@+id/tv_toolbar_title"
-            android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/tv_toolbar_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="YouTube"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="20sp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <!-- Search -->
+                <ImageView
+                    android:id="@+id/ic_search"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:src="@drawable/ic_search"
+                    android:layout_marginEnd="16dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="8dp"
+                    app:tint="?android:attr/textColorPrimary" />
+
+                <!-- Profile -->
+                <ImageView
+                    android:id="@+id/ic_profile"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_profile"
+                    android:background="@drawable/circle_background"
+                    android:scaleType="centerCrop" />
+
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <!-- TabLayout for Categories -->
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="YouTube"
-            android:textColor="?android:attr/textColorPrimary"
-        android:textSize="20sp"
-        android:fontFamily="sans-serif-medium"
-        />
+            android:background="?attr/colorSurface"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            app:tabMode="scrollable"
+            app:tabGravity="start"
+            app:tabInlineLabel="true"
+            app:tabPaddingStart="16dp"
+            app:tabPaddingEnd="16dp" />
 
-
-        <!-- Search -->
-        <ImageView
-            android:id="@+id/ic_search"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:src="@drawable/ic_search"
-            android:layout_marginEnd="16dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="8dp"
-            app:tint="?android:attr/textColorPrimary" /> <!-- TINT ICON THEO THEME -->
-
-        <!-- Profile -->
-        <ImageView
-            android:id="@+id/ic_profile"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/ic_profile"
-            android:background="@drawable/circle_background"
-        android:scaleType="centerCrop" />
-
-
-    </LinearLayout>
-</androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
+
     <!-- Content Area -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -88,68 +99,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Category Filter Tabs -->
-            <HorizontalScrollView
+            <!-- ViewPager2 for Category Content -->
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/view_pager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="none"
-                android:paddingVertical="8dp"
-                android:background="#0F0F0F">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="12dp">
-
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tất cả"
-                        android:textColor="#000000"
-                        app:chipBackgroundColor="#FFFFFF"
-                        android:layout_marginEnd="8dp"
-                        app:chipCornerRadius="20dp" />
-
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Âm nhạc"
-                        android:textColor="#FFFFFF"
-                        app:chipBackgroundColor="#272727"
-                        android:layout_marginEnd="8dp"
-                        app:chipCornerRadius="20dp" />
-
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Gaming"
-                        android:textColor="#FFFFFF"
-                        app:chipBackgroundColor="#272727"
-                        android:layout_marginEnd="8dp"
-                        app:chipCornerRadius="20dp" />
-
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Thể thao"
-                        android:textColor="#FFFFFF"
-                        app:chipBackgroundColor="#272727"
-                        android:layout_marginEnd="8dp"
-                        app:chipCornerRadius="20dp" />
-
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tin tức"
-                        android:textColor="#FFFFFF"
-                        app:chipBackgroundColor="#272727"
-                        android:layout_marginEnd="8dp"
-                        app:chipCornerRadius="20dp" />
-
-                </LinearLayout>
-
-            </HorizontalScrollView>
+                android:layout_height="wrap_content" />
 
             <!-- Shimmer Loading Layout -->
             <com.facebook.shimmer.ShimmerFrameLayout
@@ -183,7 +137,6 @@
                 android:paddingBottom="80dp"
                 tools:listitem="@layout/item_video"
                 android:clipToPadding="false" />
-
 
         </LinearLayout>
 

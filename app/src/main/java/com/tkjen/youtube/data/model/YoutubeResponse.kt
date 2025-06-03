@@ -6,10 +6,25 @@ data class YoutubeResponse(
 )
 
 data class VideoItem(
+
     val id: String,
     val snippet: Snippet, // Thường snippet luôn có
     val contentDetails: ContentDetails?, // Cho phép null
     val statistics: Statistics? // Cho phép null
+)
+data class SearchResponse(
+    val items: List<SearchItem>,
+    val nextPageToken: String?
+)
+
+data class SearchItem(
+    val id: SearchItemId,
+    val snippet: Snippet
+)
+
+data class SearchItemId(
+    val kind: String,
+    val videoId: String
 )
 
 

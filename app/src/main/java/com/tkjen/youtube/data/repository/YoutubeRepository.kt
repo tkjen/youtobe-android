@@ -23,11 +23,13 @@ class YoutubeRepository @Inject constructor(
         Log.d("YoutubeRepository", "Received response with ${response.items.size} items")
         return response
     }
+
     suspend fun getPopularVideos(): List<VideoItem> {
         val response = apiService.getPopularVideos(apiKey = apiKey)
         Log.d("YoutubeRepository", "Fetched ${response.items.size} popular videos")
         return response.items
     }
+
     suspend fun getPopularVideosPagination(pageToken: String?): VideoListResponse {
         return apiService.getPopularVideos(
             pageToken = pageToken,
@@ -35,4 +37,39 @@ class YoutubeRepository @Inject constructor(
         )
     }
 
+    suspend fun getVideosByCategory(category: String): List<VideoItem> {
+        val categoryId = when (category) {
+            "Music" -> "10" // Music category ID
+            "Gaming" -> "20"  // Gaming category ID
+            "Sports" -> "17" // Sports category ID
+            "News" -> "25"  // News category ID
+            else -> return getPopularVideos() // Default to popular videos
+        }
+
+        // Use the videos endpoint with category ID for better results
+        val response = apiService.getPopularVideos(
+            videoCategoryId = categoryId,
+            apiKey = apiKey
+        )
+        
+        Log.d("YoutubeRepository", "Fetched ${response.items.size} videos for category: $category")
+        return response.items
+    }
+
+    suspend fun getVideosByCategoryPagination(category: String, pageToken: String?): VideoListResponse {
+        val categoryId = when (category) {
+            "Music" -> "10"
+            "Gaming" -> "20"
+            "Sports" -> "17"
+            "News" -> "25"
+            else -> return getPopularVideosPagination(pageToken)
+        }
+
+        // Use the videos endpoint with category ID for better results
+        return apiService.getPopularVideos(
+            videoCategoryId = categoryId,
+            pageToken = pageToken,
+            apiKey = apiKey
+        )
+    }
 }
