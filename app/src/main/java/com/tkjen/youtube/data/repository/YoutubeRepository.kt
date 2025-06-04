@@ -5,6 +5,7 @@ import com.tkjen.youtube.data.api.YoutubeApiService
 import com.tkjen.youtube.data.model.VideoItem
 import com.tkjen.youtube.data.model.VideoListResponse
 import com.tkjen.youtube.data.model.YoutubeResponse
+import com.tkjen.youtube.data.model.SearchItem
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -64,5 +65,69 @@ class YoutubeRepository @Inject constructor(
 
         val count = response.items.firstOrNull()?.statistics?.subscriberCount ?: "0"
         return count
+    }
+
+    /**
+     * Lấy danh sách shorts videos phổ biến
+     * @return Danh sách VideoItem chứa thông tin shorts
+     */
+    suspend fun getPopularShorts(): List<VideoItem> {
+        try {
+            Log.d("YoutubeRepository", "Fetching popular shorts videos...")
+            
+            // Lấy danh sách shorts từ API
+            val searchResponse = apiService.getShortsVideos(apiKey = apiKey)
+            
+            if (searchResponse.items.isEmpty()) {
+                Log.d("YoutubeRepository", "No shorts videos found")
+                return emptyList()
+            }
+
+            // Lấy danh sách video IDs từ kết quả tìm kiếm
+            val videoIds = searchResponse.items.map { it.id.videoId }
+            
+            // Lấy thông tin chi tiết của các video
+            val videoDetails = getVideoDetails(videoIds)
+            
+            Log.d("YoutubeRepository", "Fetched ${videoDetails.items.size} shorts videos")
+            return videoDetails.items
+        } catch (e: Exception) {
+            Log.e("YoutubeRepository", "Error fetching shorts videos: ${e.message}")
+            return emptyList()
+        }
+    }
+
+    /**
+     * Lấy danh sách shorts videos phổ biến với phân trang
+     * @param pageToken Token phân trang
+     * @return VideoListResponse chứa danh sách video và token phân trang tiếp theo
+     */
+    suspend fun getPopularShortsPagination(pageToken: String?): VideoListResponse {
+        try {
+            Log.d("YoutubeRepository", "Fetching popular shorts videos with page token: $pageToken")
+            
+            // Lấy danh sách shorts từ API
+            val searchResponse = apiService.getShortsVideos(
+                pageToken = pageToken,
+                apiKey = apiKey
+            )
+            
+            if (searchResponse.items.isEmpty()) {
+                Log.d("YoutubeRepository", "No shorts videos found")
+                return VideoListResponse(emptyList(), null)
+            }
+
+            // Lấy danh sách video IDs từ kết quả tìm kiếm
+            val videoIds = searchResponse.items.map { it.id.videoId }
+            
+            // Lấy thông tin chi tiết của các video
+            val videoDetails = getVideoDetails(videoIds)
+            
+            Log.d("YoutubeRepository", "Fetched ${videoDetails.items.size} shorts videos")
+            return VideoListResponse(videoDetails.items, searchResponse.nextPageToken)
+        } catch (e: Exception) {
+            Log.e("YoutubeRepository", "Error fetching shorts videos: ${e.message}")
+            return VideoListResponse(emptyList(), null)
+        }
     }
 }

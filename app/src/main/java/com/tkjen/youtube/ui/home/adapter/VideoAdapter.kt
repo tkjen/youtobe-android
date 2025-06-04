@@ -68,9 +68,6 @@ class VideoAdapter : ListAdapter<VideoItem, VideoAdapter.VideoViewHolder>(VideoD
                 }
 
                 itemView.setOnClickListener {
-                    // Log để debug
-                    Log.d("VideoAdapter", "Video ID: ${video.id}")
-                    Log.d("VideoAdapter", "Video Title: ${video.snippet.title}")
 
                     val navController = itemView.findNavController()
                     val currentDestination = navController.currentDestination

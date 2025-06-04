@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_homeFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_shortsFragment"
+            app:destination="@id/shortsFragment" />
     </fragment>
 
     <fragment
@@ -46,5 +49,10 @@
             android:id="@+id/action_libaryFragment_to_videoDetailsFragment"
             app:destination="@id/videoDetailsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/shortsFragment"
+        android:name="com.tkjen.youtube.ui.shorts.ShortsFragment"
+        android:label="ShortsFragment"
+        tools:layout="@layout/fragment_shorts"/>
 
 </navigation>

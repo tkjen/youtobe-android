@@ -45,5 +45,16 @@ interface YoutubeApiService {
         @Query("key") apiKey: String
     ): ChannelResponse
 
+    @GET("search")
+    suspend fun getShortsVideos(
+        @Query("part") part: String = "snippet",
+        @Query("type") type: String = "video",
+        @Query("maxResults") maxResults: Int = 50,
+        @Query("videoDuration") videoDuration: String = "short", // Đây là điểm mấu chốt
+        @Query("q") query: String = "shorts",  // tìm theo từ khóa "shorts"
+        @Query("regionCode") regionCode: String = "VN",
+        @Query("key") apiKey: String,
+        @Query("pageToken") pageToken: String? = null
+    ): SearchResponse
 
 }

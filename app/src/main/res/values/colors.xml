@@ -20,4 +20,11 @@
     <color name="bottom_unselected">#606060</color><!-- Ví dụ: Xám đậm -->
     <!-- Placeholder for Shimmer -->
     <color name="placeholder_bg">#DDDDDD</color>
+
+    <!-- Colors for Shorts Fragment -->
+    <color name="background">@color/app_bg_color</color>
+    <color name="on_background">@color/app_text_primary</color>
+    <color name="surface_variant">#E7E0EC</color>
+    <color name="error">#B3261E</color>
+    <color name="outline">#79747E</color>
 </resources>

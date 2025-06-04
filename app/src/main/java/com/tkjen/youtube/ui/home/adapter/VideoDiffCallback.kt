@@ -9,8 +9,7 @@ class VideoDiffCallback : DiffUtil.ItemCallback<VideoItem>() {
     }
 
     override fun areContentsTheSame(oldItem: VideoItem, newItem: VideoItem): Boolean {
-        // Đối với data class, so sánh mặc định thường là đủ.
-        // Nếu bạn có logic phức tạp, bạn có thể so sánh từng trường.
+
         return oldItem == newItem
     }
 }
