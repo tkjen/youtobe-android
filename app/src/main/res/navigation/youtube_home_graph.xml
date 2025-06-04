@@ -26,6 +26,9 @@
         <argument
             android:name="videoId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_videoDetailsFragment_self"
+            app:destination="@id/videoDetailsFragment" />
     </fragment>
 
     <fragment

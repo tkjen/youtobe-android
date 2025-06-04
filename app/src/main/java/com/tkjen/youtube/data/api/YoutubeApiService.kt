@@ -1,10 +1,12 @@
 package com.tkjen.youtube.data.api
 
+import com.tkjen.youtube.data.model.ChannelResponse
 import com.tkjen.youtube.data.model.VideoListResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 import com.tkjen.youtube.data.model.YoutubeResponse
 import com.tkjen.youtube.data.model.SearchResponse
+import com.tkjen.youtube.data.model.Statistics
 
 //Giao tiếp với API YouTube
 interface YoutubeApiService {
@@ -31,9 +33,17 @@ interface YoutubeApiService {
     suspend fun searchVideosByCategory(
         @Query("part") part: String = "snippet",
         @Query("type") type: String = "video",
-        @Query("videoCategoryId") videoCategoryId: String,
         @Query("maxResults") maxResults: Int = 20,
         @Query("pageToken") pageToken: String? = null,
         @Query("key") apiKey: String
     ): SearchResponse
+
+    @GET("channels")
+    suspend fun getChannelStatistics(
+        @Query("part") part: String = "statistics",
+        @Query("id") channelId: String,
+        @Query("key") apiKey: String
+    ): ChannelResponse
+
+
 }

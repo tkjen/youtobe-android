@@ -90,6 +90,12 @@ class VideoAdapter : ListAdapter<VideoItem, VideoAdapter.VideoViewHolder>(VideoD
                                 .actionLibaryFragmentToVideoDetailsFragment(videoId)
                             navController.navigate(action)
                         }
+                        R.id.videoDetailsFragment->
+                        {
+                            val action = com.tkjen.youtube.ui.video_details.VideoDetailsFragmentDirections
+                                .actionVideoDetailsFragmentSelf(videoId)
+                            navController.navigate(action)
+                        }
                         else -> {
                             // Fallback navigation if the current fragment doesn't have a specific action
                             val action = com.tkjen.youtube.ui.home.HomeFragmentDirections

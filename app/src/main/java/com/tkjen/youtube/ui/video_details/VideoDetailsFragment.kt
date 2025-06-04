@@ -1,19 +1,22 @@
 package com.tkjen.youtube.ui.video_details
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.tkjen.youtube.R
 import com.tkjen.youtube.data.model.VideoItem
+
 import com.tkjen.youtube.databinding.FragmentVideoDetailsBinding
+import com.tkjen.youtube.ui.home.adapter.VideoAdapter
 import com.tkjen.youtube.utils.formatTimeAgo
 import com.tkjen.youtube.utils.formatViewCount
 import com.tkjen.youtube.utils.Result
@@ -27,7 +30,7 @@ class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
     private lateinit var binding: FragmentVideoDetailsBinding
     private val viewModel: VideoDetailsViewModel by viewModels()
     private val args: VideoDetailsFragmentArgs by navArgs()
-
+    private lateinit var videoAdapter: VideoAdapter
     private var youTubePlayer: YouTubePlayer? = null
     private var isPlayerReady = false
     private var currentVideoId: String? = null
@@ -36,18 +39,16 @@ class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentVideoDetailsBinding.bind(view)
 
-        // Lấy videoId từ navArgs
         currentVideoId = args.videoId
-
         setupYouTubePlayer()
-        observeVideoDetails()
+        setupRecyclerView()
         setupClickListeners()
+        observeViewModel()
 
-        // Gọi ViewModel để lấy dữ liệu video
-        viewModel.loadVideoDetails(currentVideoId!!)
+        // Load dữ liệu video
+        currentVideoId?.let { viewModel.loadVideoDetails(it) }
     }
 
-    // Cài đặt YouTube Player
     private fun setupYouTubePlayer() {
         lifecycle.addObserver(binding.youtubePlayerView)
 
@@ -55,48 +56,76 @@ class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
             override fun onReady(player: YouTubePlayer) {
                 youTubePlayer = player
                 isPlayerReady = true
-
-                // Nếu đã có videoId -> load video
-                currentVideoId?.let {
-                    player.loadVideo(it, 0f)
-                }
-            }
-
-            override fun onStateChange(player: YouTubePlayer, state: PlayerConstants.PlayerState) {
-                // Có thể log hoặc xử lý thêm nếu cần
+                currentVideoId?.let { player.loadVideo(it, 0f) }
             }
         })
     }
 
-    // Quan sát dữ liệu từ ViewModel
-    private fun observeVideoDetails() {
+    private fun setupRecyclerView() {
+
+        videoAdapter = VideoAdapter()
+        binding.recyclerViewVideos.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = videoAdapter
+        }
+    }
+
+
+    private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
+            // Quan sát thông tin chi tiết video
             viewModel.videoDetails.collectLatest { result ->
                 when (result) {
-                    is Result.Loading -> {
-                        // Hiển thị loading nếu muốn
-                    }
-
                     is Result.Success -> {
                         val video = result.data
                         currentVideoId = video.id
                         updateUI(video)
-
-                        // Nếu player đã sẵn sàng thì load lại video
                         if (isPlayerReady) {
                             youTubePlayer?.loadVideo(video.id, 0f)
                         }
-                    }
 
+                    }
                     is Result.Error -> {
                         Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {} // Loading state
+                }
+            }
+
+            // Quan sát số lượng subscriber
+            viewModel.subscriberCount.collectLatest { count ->
+                binding.tvSubscriberCount.text = "$count Subscribers"
+            }
+
+            // Quan sát danh sách video liên quan
+
+
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.videos.collectLatest { result ->
+                when (result) {
+                    is Result.Success -> {
+                        Log.d("VideoDetailsFragment", "Related videos loaded: ${result.data.size}")
+                        if (result.data.isNotEmpty()) {
+                            binding.recyclerViewVideos.visibility = View.VISIBLE
+                            videoAdapter.submitList(result.data)
+                        } else {
+                            binding.recyclerViewVideos.visibility = View.GONE
+                        }
+                    }
+                    is Result.Error -> {
+                        Log.e("VideoDetailsFragment", "Error loading related videos: ${result.message}")
+                        binding.recyclerViewVideos.visibility = View.GONE
+                        Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {
+                        binding.recyclerViewVideos.visibility = View.GONE
                     }
                 }
             }
         }
     }
 
-    // Cập nhật giao diện từ dữ liệu video
     private fun updateUI(video: VideoItem) {
         binding.apply {
             tvVideoTitle.text = video.snippet.title
@@ -104,7 +133,6 @@ class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
             tvUploadDate.text = formatTimeAgo(video.snippet.publishedAt)
             tvLikeCount.text = formatViewCount(video.statistics?.likeCount)
             tvChannelName.text = video.snippet.channelTitle
-            tvSubscriberCount.text = "${formatViewCount(video.statistics?.subscriberCount)} subscriber"
             tvDescription.text = video.snippet.description
 
             Glide.with(requireContext())
@@ -115,7 +143,6 @@ class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
         }
     }
 
-    // Bắt sự kiện các nút bấm
     private fun setupClickListeners() {
         binding.apply {
             btnLike.setOnClickListener {
@@ -139,7 +166,6 @@ class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
             }
 
             btnShowMore.setOnClickListener {
-                // Mở rộng/thu gọn phần mô tả
                 val isCollapsed = tvDescription.maxLines == 3
                 tvDescription.maxLines = if (isCollapsed) Int.MAX_VALUE else 3
                 btnShowMore.text = if (isCollapsed) "Thu gọn" else "Hiển thị thêm"
@@ -147,7 +173,6 @@ class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
         }
     }
 
-    // Giải phóng tài nguyên khi Fragment bị huỷ
     override fun onDestroyView() {
         super.onDestroyView()
         binding.youtubePlayerView.release()

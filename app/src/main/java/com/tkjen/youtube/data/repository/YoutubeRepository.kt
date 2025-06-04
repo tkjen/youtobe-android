@@ -56,20 +56,13 @@ class YoutubeRepository @Inject constructor(
         return response.items
     }
 
-    suspend fun getVideosByCategoryPagination(category: String, pageToken: String?): VideoListResponse {
-        val categoryId = when (category) {
-            "Music" -> "10"
-            "Gaming" -> "20"
-            "Sports" -> "17"
-            "News" -> "25"
-            else -> return getPopularVideosPagination(pageToken)
-        }
-
-        // Use the videos endpoint with category ID for better results
-        return apiService.getPopularVideos(
-            videoCategoryId = categoryId,
-            pageToken = pageToken,
+    suspend fun getChannelSubscriberCount(channelId: String): String {
+        val response = apiService.getChannelStatistics(
+            channelId = channelId,
             apiKey = apiKey
         )
+
+        val count = response.items.firstOrNull()?.statistics?.subscriberCount ?: "0"
+        return count
     }
 }

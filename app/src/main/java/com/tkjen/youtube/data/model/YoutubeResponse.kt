@@ -9,7 +9,8 @@ data class VideoItem(
     val id: String,
     val snippet: Snippet, // Thường snippet luôn có
     val contentDetails: ContentDetails?, // Cho phép null
-    val statistics: Statistics? // Cho phép null
+    val statistics: Statistics?, // Cho phép null
+
 )
 
 data class SearchResponse(
@@ -33,7 +34,8 @@ data class Snippet(
     val title: String,
     val description: String,
     val thumbnails: Thumbnails,
-    val channelTitle: String
+    val channelTitle: String,
+    val categoryId: String?,
 )
 
 data class VideoListResponse(
@@ -67,4 +69,19 @@ data class Statistics(
 data class PageInfo(
     val totalResults: Int,
     val resultsPerPage: Int
+)
+data class ChannelResponse(
+    val items: List<ChannelItem>
+)
+
+data class ChannelItem(
+    val id: String,
+    val statistics: ChannelStatistics
+)
+
+data class ChannelStatistics(
+    val viewCount: String,
+    val subscriberCount: String,
+    val hiddenSubscriberCount: Boolean,
+    val videoCount: String
 )

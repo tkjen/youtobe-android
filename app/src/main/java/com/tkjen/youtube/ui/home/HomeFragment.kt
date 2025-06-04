@@ -30,11 +30,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var viewPagerAdapter: CategoryViewPagerAdapter
 
     private val categories = listOf(
-        "Tất cả",
-        "Âm nhạc",
-        "Gaming",
-        "Thể thao",
-        "Tin tức"
+    "All" ,
+        "Music" ,
+    "Gaming" ,
+    "Sports" ,
+    "News" ,
     )
 
     override fun onCreateView(
@@ -59,8 +59,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             findNavController().navigate(R.id.action_homeFragment_to_settingsFragment)
         }
     }
-
-
 
     private fun setupViewPager() {
         viewPagerAdapter = CategoryViewPagerAdapter(requireActivity(), categories)

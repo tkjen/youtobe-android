@@ -303,10 +303,11 @@
                     android:id="@+id/recycler_view_videos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                     android:nestedScrollingEnabled="false"
-                    android:clipToPadding="false"
+                    android:visibility="visible"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingBottom="80dp"
                     tools:listitem="@layout/item_video"
-                />
+                    android:clipToPadding="false" />
 
             </LinearLayout>
 

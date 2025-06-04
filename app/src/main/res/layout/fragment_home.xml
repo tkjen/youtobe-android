@@ -82,6 +82,7 @@
             android:paddingVertical="4dp"
             app:tabMode="scrollable"
             app:tabGravity="start"
+            app:tabSelectedTextColor="@color/tab_selected"
             app:tabInlineLabel="true"
             app:tabPaddingStart="16dp"
             app:tabPaddingEnd="16dp" />
