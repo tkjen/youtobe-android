@@ -144,12 +144,28 @@
         </LinearLayout>
 
         <!-- Dislike -->
-                <ImageView
-                     android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:src="@drawable/ic_dislke_short"
-                    android:layout_marginTop="10dp"
-            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            >
+
+            <ImageView
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:src="@drawable/ic_dislke_short"
+                />
+            <TextView
+                android:id="@+id/tv_dislike_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dislike"
+                android:textColor="@color/white"
+                android:gravity="center"/>
+        </LinearLayout>
+
 
         <!-- Comment -->
         <LinearLayout
@@ -157,7 +173,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
            >
 
             <ImageView
@@ -178,7 +194,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:gravity="center_horizontal">
 
             <ImageView
