@@ -1,7 +1,71 @@
 package com.tkjen.youtube.ui.libary
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import com.tkjen.youtube.utils.Result
+import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.tkjen.youtube.R
-
+import com.tkjen.youtube.databinding.FragmentLibaryBinding
+import com.tkjen.youtube.ui.library.adapter.RecentVideoAdapter
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+@AndroidEntryPoint
 class LibaryFragment: Fragment(R.layout.fragment_libary) {
+
+        private lateinit var binding : FragmentLibaryBinding
+        private lateinit var recentVideoAdapter: RecentVideoAdapter
+        private val viewModel: LibaryViewModels by viewModels()
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentLibaryBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
+        observeVideos()
+
+        // Load dữ liệu recent videos
+        viewModel.loadRecentVideos()
+    }
+
+    private fun setupRecyclerView() {
+        recentVideoAdapter = RecentVideoAdapter{ onItemClick->
+
+        }
+        binding.rvRecentVideos.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = recentVideoAdapter
+        }
+    }
+
+    private fun observeVideos() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.video.collectLatest { result ->
+                when(result) {
+                    is Result.Loading -> {
+
+                    }
+                    is Result.Success -> {
+                        recentVideoAdapter.submitList(result.data)
+                    }
+                    is Result.Error -> {
+                        Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
+
 }

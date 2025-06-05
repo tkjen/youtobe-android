@@ -1,12 +1,9 @@
-// VideoAdapter.kt
-package com.tkjen.youtube.ui.home.adapter // Hoặc package hiện tại của bạn
+package com.tkjen.youtube.ui.home.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -17,7 +14,9 @@ import com.tkjen.youtube.utils.formatDuration
 import com.tkjen.youtube.utils.formatTimeAgo
 import com.tkjen.youtube.utils.formatViewCount
 
-class VideoAdapter : ListAdapter<VideoItem, VideoAdapter.VideoViewHolder>(VideoDiffCallback()) {
+class VideoAdapter(
+    private val onVideoClicked: (VideoItem) -> Unit // 👈 Callback truyền từ Fragment
+) : ListAdapter<VideoItem, VideoAdapter.VideoViewHolder>(VideoDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
         val binding = ItemVideoBinding.inflate(
@@ -25,7 +24,7 @@ class VideoAdapter : ListAdapter<VideoItem, VideoAdapter.VideoViewHolder>(VideoD
             parent,
             false
         )
-        return VideoViewHolder(binding)
+        return VideoViewHolder(binding, onVideoClicked)
     }
 
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
@@ -33,11 +32,9 @@ class VideoAdapter : ListAdapter<VideoItem, VideoAdapter.VideoViewHolder>(VideoD
         holder.bind(video)
     }
 
-    // VideoViewHolder vẫn có thể là inner class hoặc nested class nếu bạn muốn,
-    // hoặc cũng có thể tách ra file riêng nếu nó quá lớn.
-    // Hiện tại để nó ở đây vẫn ổn.
     class VideoViewHolder(
-        private val binding: ItemVideoBinding
+        private val binding: ItemVideoBinding,
+        private val onVideoClicked: (VideoItem) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(video: VideoItem) {
@@ -53,7 +50,9 @@ class VideoAdapter : ListAdapter<VideoItem, VideoAdapter.VideoViewHolder>(VideoD
                 tvDuration.text = durationText
 
                 Glide.with(imgThumbnail.context)
-                    .load(video.snippet.thumbnails.high?.url ?: video.snippet.thumbnails.medium?.url ?: video.snippet.thumbnails.default?.url)
+                    .load(video.snippet.thumbnails.high?.url
+                        ?: video.snippet.thumbnails.medium?.url
+                        ?: video.snippet.thumbnails.default?.url)
                     .placeholder(R.drawable.placeholder_thumbnail)
                     .error(R.drawable.placeholder_thumbnail)
                     .into(imgThumbnail)
@@ -64,16 +63,16 @@ class VideoAdapter : ListAdapter<VideoItem, VideoAdapter.VideoViewHolder>(VideoD
                     .into(imgChannelAvatar)
 
                 imgMenu.setOnClickListener {
-                    // Handle menu click
+                    // Handle menu click if needed
                 }
 
                 itemView.setOnClickListener {
+                    onVideoClicked(video) // 👈 Gọi callback khi click
 
                     val navController = itemView.findNavController()
                     val currentDestination = navController.currentDestination
-
-                    // Đảm bảo video.id không null
                     val videoId = video.id
+
                     Log.d("VideoAdapter", "Navigating to video with ID: $videoId")
 
                     when (currentDestination?.id) {
@@ -87,14 +86,12 @@ class VideoAdapter : ListAdapter<VideoItem, VideoAdapter.VideoViewHolder>(VideoD
                                 .actionLibaryFragmentToVideoDetailsFragment(videoId)
                             navController.navigate(action)
                         }
-                        R.id.videoDetailsFragment->
-                        {
+                        R.id.videoDetailsFragment -> {
                             val action = com.tkjen.youtube.ui.video_details.VideoDetailsFragmentDirections
                                 .actionVideoDetailsFragmentSelf(videoId)
                             navController.navigate(action)
                         }
                         else -> {
-                            // Fallback navigation if the current fragment doesn't have a specific action
                             val action = com.tkjen.youtube.ui.home.HomeFragmentDirections
                                 .actionHomeFragmentToVideoDetailsFragment(videoId)
                             navController.navigate(action)
@@ -105,8 +102,5 @@ class VideoAdapter : ListAdapter<VideoItem, VideoAdapter.VideoViewHolder>(VideoD
         }
     }
 }
-
-
-
 
 

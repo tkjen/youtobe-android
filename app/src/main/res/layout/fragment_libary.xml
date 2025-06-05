@@ -45,9 +45,9 @@
                     android:clipToPadding="false"
                     android:paddingStart="16dp"
                     android:paddingEnd="8dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_recent_video"
-                tools:itemCount="5"/>
+                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                     tools:listitem="@layout/item_recent_video"
+                        tools:itemCount="5"/>
             </LinearLayout>
 
             <!-- Đường kẻ phân cách -->

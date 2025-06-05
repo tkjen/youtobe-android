@@ -32,6 +32,11 @@
         <action
             android:id="@+id/action_videoDetailsFragment_self"
             app:destination="@id/videoDetailsFragment" />
+        <action
+            android:id="@+id/action_videoDetailsFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/youtube_home_graph"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment

@@ -2,6 +2,7 @@ package com.tkjen.youtube.ui.categories
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tkjen.youtube.data.local.DatabaseHelper
 import com.tkjen.youtube.data.model.VideoItem
 import com.tkjen.youtube.data.repository.YoutubeRepository
 import com.tkjen.youtube.utils.Result
@@ -14,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategoryVideosViewModel @Inject constructor(
-    private val repository: YoutubeRepository
+    private val repository: YoutubeRepository,
 ) : ViewModel() {
 
     // State để lưu trữ và quan sát danh sách video

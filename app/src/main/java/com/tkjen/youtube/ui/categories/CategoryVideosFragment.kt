@@ -1,6 +1,7 @@
 package com.tkjen.youtube.ui.categories
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,12 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.tkjen.youtube.data.local.DatabaseHelper
+import com.tkjen.youtube.data.mapper.YoutubeMapper
 import com.tkjen.youtube.databinding.FragmentCategoryVideosBinding
 import com.tkjen.youtube.ui.home.adapter.VideoAdapter
 import com.tkjen.youtube.utils.Result
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CategoryVideosFragment : Fragment() {
@@ -22,7 +26,8 @@ class CategoryVideosFragment : Fragment() {
     private val viewModel: CategoryVideosViewModel by viewModels()
     private lateinit var videoAdapter: VideoAdapter
     private var category: String? = null
-
+    @Inject
+    lateinit var  databaseHelper: DatabaseHelper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Lấy dữ liệu category từ arguments của fragment khi nó được khởi tạo.
@@ -48,13 +53,20 @@ class CategoryVideosFragment : Fragment() {
         loadVideos()
     }
 
-    private fun setupRecyclerView() {
-        videoAdapter = VideoAdapter()
-        binding.recyclerViewVideos.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = videoAdapter
+        private fun setupRecyclerView() {
+            videoAdapter = VideoAdapter{clickVideo->
+                lifecycleScope.launch {
+                    val recentVideo = YoutubeMapper.toRecentVideo(clickVideo)
+                    databaseHelper.insertRecentVideo(recentVideo)
+                    Log.d("CategoryVideosFragment", "Lưu video thành công: ${recentVideo.videoTitle}")
+                }
+
+            }
+            binding.recyclerViewVideos.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = videoAdapter
+            }
         }
-    }
 
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {

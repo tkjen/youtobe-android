@@ -13,6 +13,8 @@ import com.bumptech.glide.Glide
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.tkjen.youtube.R
+import com.tkjen.youtube.data.local.DatabaseHelper
+import com.tkjen.youtube.data.mapper.YoutubeMapper
 import com.tkjen.youtube.data.model.VideoItem
 
 import com.tkjen.youtube.databinding.FragmentVideoDetailsBinding
@@ -23,6 +25,7 @@ import com.tkjen.youtube.utils.Result
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
@@ -34,7 +37,8 @@ class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
     private var youTubePlayer: YouTubePlayer? = null
     private var isPlayerReady = false
     private var currentVideoId: String? = null
-
+    @Inject
+    lateinit var  databaseHelper: DatabaseHelper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentVideoDetailsBinding.bind(view)
@@ -63,7 +67,14 @@ class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
 
     private fun setupRecyclerView() {
 
-        videoAdapter = VideoAdapter()
+        videoAdapter = VideoAdapter{clickVideo->
+            lifecycleScope.launch {
+                val recentVideo = YoutubeMapper.toRecentVideo(clickVideo)
+                databaseHelper.insertRecentVideo(recentVideo)
+                Log.d("CategoryVideosFragment", "Lưu video thành công: ${recentVideo.videoTitle}")
+            }
+
+        }
         binding.recyclerViewVideos.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = videoAdapter
