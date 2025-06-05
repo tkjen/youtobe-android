@@ -2,6 +2,7 @@ package com.tkjen.youtube.ui.shorts.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -10,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
+import com.tkjen.youtube.R
 import com.tkjen.youtube.data.model.VideoItem
 import com.tkjen.youtube.databinding.ItemShortsBinding
 import com.tkjen.youtube.utils.formatViewCount
@@ -102,6 +104,12 @@ class ShortsAdapter(
                 .load(video.snippet.thumbnails.high?.url)
                 .centerCrop()
                 .into(ivThumbnail)
+
+            Glide.with(imgChannelAvatar.context)
+                .load(video.snippet.thumbnails.high?.url)
+                .placeholder(R.drawable.placeholder_avatar)
+                .circleCrop()
+                .into(imgChannelAvatar)
         }
 
         private fun ItemShortsBinding.setVideoInfo(video: VideoItem) {
