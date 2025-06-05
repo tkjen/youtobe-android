@@ -116,6 +116,8 @@ class ShortsAdapter(
             tvTitle.text = video.snippet.title
             tvChannelTitle.text = video.snippet.channelTitle
             tvViewCount.text = formatViewCount(video.statistics?.viewCount)
+            tvLikeCount.text = formatViewCount(video.statistics?.likeCount)
+            tvCommentCount.text = formatViewCount(video.statistics?.commentCount)
         }
 
         private fun ItemShortsBinding.updatePlayButtonVisibility() {

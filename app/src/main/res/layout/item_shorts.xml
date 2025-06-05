@@ -62,7 +62,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="10dp"
                 android:textColor="@android:color/white"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 tools:text="Channel Name" />
 
 
@@ -79,7 +79,7 @@
             android:maxLines="2"
             android:layout_marginTop="5dp"
             android:textColor="@android:color/white"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             tools:text="Video Title" />
 
@@ -109,5 +109,89 @@
         app:layout_constraintTop_toTopOf="@id/ivThumbnail"
         android:visibility="gone"
         app:tint="@android:color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="end"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="@id/ivThumbnail"
+        app:layout_constraintEnd_toEndOf="@id/ivThumbnail"
+        app:layout_constraintStart_toStartOf="@id/ivThumbnail"
+        app:layout_constraintTop_toTopOf="@id/ivThumbnail"
+        >
+
+        <!-- Like -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            >
+            <ImageView
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:src="@drawable/ic_like_short"/>
+
+            <TextView
+                android:id="@+id/tv_like_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="56K"
+                android:textColor="@color/white"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <!-- Dislike -->
+                <ImageView
+                     android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:src="@drawable/ic_dislke_short"
+                    android:layout_marginTop="10dp"
+            />
+
+        <!-- Comment -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+           >
+
+            <ImageView
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:src="@drawable/ic_comment"/>
+
+            <TextView
+                android:id="@+id/tv_comment_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="56K"/>
+        </LinearLayout>
+
+        <!-- Share -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:src="@drawable/ic_share_short"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="Share"/>
+        </LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout> 

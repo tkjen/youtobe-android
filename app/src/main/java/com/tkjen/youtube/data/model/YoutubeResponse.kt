@@ -63,7 +63,8 @@ data class Statistics(
     val viewCount: String?,
     val likeCount: String?,
     val commentCount: String?,
-    val subscriberCount: String?
+    val subscriberCount: String?,
+
 )
 
 data class PageInfo(
