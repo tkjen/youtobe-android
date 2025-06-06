@@ -71,6 +71,7 @@ class YoutubeRepository @Inject constructor(
      * Lấy danh sách shorts videos phổ biến
      * @return Danh sách VideoItem chứa thông tin shorts
      */
+    // short videos are typically fetched using the search endpoint with a specific query
     suspend fun getPopularShorts(): List<VideoItem> {
         try {
             Log.d("YoutubeRepository", "Fetching popular shorts videos...")
