@@ -151,7 +151,14 @@ class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
                 .placeholder(R.drawable.placeholder_avatar)
                 .circleCrop()
                 .into(ivChannelAvatar)
+
+
         }
+        viewLifecycleOwner.lifecycleScope.launch {
+            val isLiked = databaseHelper.isVideoLiked(args.videoId)
+            updateLikeIcon(isLiked)
+        }
+
     }
 
     private fun setupClickListeners() {
@@ -175,6 +182,29 @@ class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
             btnSubscribe.setOnClickListener {
                 Toast.makeText(requireContext(), "Đăng ký kênh", Toast.LENGTH_SHORT).show()
             }
+            icLike.setOnClickListener {
+                val currentVideo = viewModel.videoDetails.value
+                if (currentVideo is Result.Success) {
+                    val likeVideo = YoutubeMapper.toLikeVideo(currentVideo.data)
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        val isLiked = databaseHelper.toggleLikeVideo(likeVideo)
+                        if (isLiked) {
+                            Toast.makeText(requireContext(), "Đã thích video", Toast.LENGTH_SHORT).show()
+                            Log.d("LikeVideo", "Liked: ${likeVideo.videoTitle}")
+                            // Optional: đổi icon sang trạng thái đã thích
+                            icLike.setImageResource(R.drawable.ic_liked)
+                        } else {
+                            Toast.makeText(requireContext(), "Đã bỏ thích video", Toast.LENGTH_SHORT).show()
+                            Log.d("LikeVideo", "Unliked: ${likeVideo.videoTitle}")
+                            icLike.setImageResource(R.drawable.ic_thumb_up)
+                            // Optional: đổi icon sang trạng thái chưa thích
+                        }
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "Chưa có video để thao tác", Toast.LENGTH_SHORT).show()
+                }
+            }
+
 
             btnShowMore.setOnClickListener {
                 val isCollapsed = tvDescription.maxLines == 3
@@ -190,4 +220,10 @@ class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
         youTubePlayer = null
         isPlayerReady = false
     }
+    private fun updateLikeIcon(isLiked: Boolean) {
+        binding.icLike.setImageResource(
+            if (isLiked) R.drawable.ic_liked else R.drawable.ic_thumb_up
+        )
+    }
+
 }

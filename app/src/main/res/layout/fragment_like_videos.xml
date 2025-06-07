@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="?attr/colorSurface">
 
     <!-- Main content container -->
@@ -197,6 +198,13 @@
 
                     <!-- Section header -->
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_like_videos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:listitem="@layout/item_like_video"
+                        tools:itemCount="5"
+                        />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

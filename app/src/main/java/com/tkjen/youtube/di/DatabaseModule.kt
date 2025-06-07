@@ -30,13 +30,13 @@ abstract class DatabaseModule {
             return Room.databaseBuilder(
                 appContext,
                 AppDatabase::class.java,
-                "recentVideo-database"
+                "youtube-database"
             ).fallbackToDestructiveMigration()
                 .build()
         }
 
         @Provides
         @Singleton
-        fun provideRecentVideoDao(appDatabase: AppDatabase) = appDatabase.recentVideoDao()
+        fun provideYoutubeDao(appDatabase: AppDatabase) = appDatabase.youtubeDao()
     }
 }
