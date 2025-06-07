@@ -53,11 +53,18 @@
         <action
             android:id="@+id/action_libaryFragment_to_videoDetailsFragment"
             app:destination="@id/videoDetailsFragment" />
+        <action
+            android:id="@+id/action_libaryFragment_to_likeVideosFragment"
+            app:destination="@id/likeVideosFragment" />
     </fragment>
     <fragment
         android:id="@+id/shortsFragment"
         android:name="com.tkjen.youtube.ui.shorts.ShortsFragment"
         android:label="ShortsFragment"
         tools:layout="@layout/fragment_shorts"/>
+    <fragment
+        android:id="@+id/likeVideosFragment"
+        android:name="com.tkjen.youtube.ui.like.LikeVideosFragment"
+        android:label="LikeVideosFragment" />
 
 </navigation>

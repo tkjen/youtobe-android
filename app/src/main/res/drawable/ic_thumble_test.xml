@@ -1,0 +1,10 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="360dp"
+    android:height="215dp"
+    android:viewportWidth="360"
+    android:viewportHeight="215">
+  <path
+      android:pathData="M0,0h360v215h-360z"
+      android:fillColor="#C4C4C4"/>
+  <!-- Removed the path with the problematic pattern -->
+</vector>

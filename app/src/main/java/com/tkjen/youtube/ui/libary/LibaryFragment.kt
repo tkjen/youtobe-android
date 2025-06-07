@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tkjen.youtube.R
 import com.tkjen.youtube.databinding.FragmentLibaryBinding
@@ -37,6 +38,10 @@ class LibaryFragment: Fragment(R.layout.fragment_libary) {
 
         // Load dữ liệu recent videos
         viewModel.loadRecentVideos()
+
+        binding.lnLikedVideos.setOnClickListener {
+            findNavController().navigate(R.id.action_libaryFragment_to_likeVideosFragment)
+        }
     }
 
     private fun setupRecyclerView() {

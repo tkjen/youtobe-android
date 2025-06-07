@@ -8,11 +8,13 @@ import com.tkjen.youtube.data.local.entity.RecentVideo
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface RecentVideoDao {
+interface YoutubeDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(video: RecentVideo)
 
     @Query("SELECT * FROM recent_videos ORDER BY lastViewed DESC LIMIT 20")
     fun getRecentVideos(): Flow<List<RecentVideo>>
+
+
 }
