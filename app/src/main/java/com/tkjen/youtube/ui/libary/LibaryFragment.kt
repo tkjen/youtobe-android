@@ -12,17 +12,23 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tkjen.youtube.R
+import com.tkjen.youtube.data.local.DatabaseHelper
+import com.tkjen.youtube.data.mapper.YoutubeMapper
 import com.tkjen.youtube.databinding.FragmentLibaryBinding
 import com.tkjen.youtube.ui.library.adapter.RecentVideoAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+
 @AndroidEntryPoint
 class LibaryFragment: Fragment(R.layout.fragment_libary) {
 
         private lateinit var binding : FragmentLibaryBinding
         private lateinit var recentVideoAdapter: RecentVideoAdapter
         private val viewModel: LibaryViewModels by viewModels()
+    @Inject
+    lateinit var  databaseHelper: DatabaseHelper
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

@@ -1,4 +1,4 @@
-package com.tkjen.youtube.ui.library.adapter
+package com.tkjen.youtube.ui.libary.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,7 +16,7 @@ import com.tkjen.youtube.ui.libary.adapter.RecentVideoDiffCallback
 import com.tkjen.youtube.utils.formatDuration
 
 class RecentVideoAdapter(
-    private val onItemClick: (VideoItem) -> Unit
+    private val onItemClick: (RecentVideo) -> Unit
 ) : ListAdapter<RecentVideo, RecentVideoAdapter.RecentVideoViewHolder>(RecentVideoDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecentVideoViewHolder {
