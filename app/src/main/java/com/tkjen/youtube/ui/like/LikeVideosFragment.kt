@@ -9,22 +9,24 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.tkjen.youtube.R
 import com.tkjen.youtube.data.local.DatabaseHelper
 import com.tkjen.youtube.databinding.FragmentLikeVideosBinding
 import com.tkjen.youtube.ui.like.adapter.LikeVideoAdapter
+import com.tkjen.youtube.utils.Result
+import com.tkjen.youtube.utils.SwipeToDeleteCallback
+import com.tkjen.youtube.utils.formatDuration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import com.tkjen.youtube.utils.Result
-import com.tkjen.youtube.utils.formatDuration
-import kotlinx.coroutines.flow.firstOrNull
 
 @AndroidEntryPoint
-class LikeVideosFragment:Fragment(R.layout.fragment_like_videos) {
+class LikeVideosFragment : Fragment(R.layout.fragment_like_videos) {
 
     private lateinit var binding: FragmentLikeVideosBinding
     private val viewModel: LikeVideosViewModels by viewModels()
@@ -32,6 +34,7 @@ class LikeVideosFragment:Fragment(R.layout.fragment_like_videos) {
 
     @Inject
     lateinit var databaseHelper: DatabaseHelper
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,74 +49,82 @@ class LikeVideosFragment:Fragment(R.layout.fragment_like_videos) {
         setupRecyclerView()
         observeVideos()
         updateUi()
-
         viewModel.loadLikedVideos()
     }
 
- private fun setupRecyclerView() {
-        likeVideoAdapter = LikeVideoAdapter { onItemClick ->
+    private fun setupRecyclerView() {
+        likeVideoAdapter = LikeVideoAdapter(
+            onItemClick = { video ->
+                // Xử lý click item ở đây nếu cần
+            }
+        )
 
-        }
         binding.rvLikeVideos.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(context)
             adapter = likeVideoAdapter
         }
 
+        val itemTouchHelper = ItemTouchHelper(
+            SwipeToDeleteCallback(requireContext()) { position ->
+                val video = likeVideoAdapter.currentList.getOrNull(position)
+                if (video != null) {
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        databaseHelper.deleteLikeVideo(video)
+                        val updatedList = likeVideoAdapter.currentList.toMutableList()
+                        updatedList.removeAt(position)
+                        likeVideoAdapter.submitList(updatedList)
+                        Toast.makeText(context,"Remove video ${video.videoTitle}", Toast.LENGTH_SHORT).show()
+                        updateUi()
+                    }
+                }
+            }
+        )
+        itemTouchHelper.attachToRecyclerView(binding.rvLikeVideos)
     }
 
-  private fun observeVideos(){
+    private fun observeVideos() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.video.collectLatest { result ->
                 when (result) {
                     is Result.Loading -> {
-                        // Show loading state if needed
+                        // TODO: show loading if needed
                     }
                     is Result.Success -> {
                         likeVideoAdapter.submitList(result.data)
                     }
                     is Result.Error -> {
-                        // Handle error state, e.g., show a Toast
                         Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         }
-
     }
 
-    private fun updateUi(){
-            binding.apply {
-                viewLifecycleOwner.lifecycleScope.launch {
+    private fun updateUi() {
+        binding.apply {
+            viewLifecycleOwner.lifecycleScope.launch {
+                val videos = databaseHelper.getLikedVideos().firstOrNull() ?: emptyList()
+                if (videos.isNotEmpty()) {
+                    val firstVideo = videos.first()
+                    Glide.with(requireContext())
+                        .load(firstVideo.thumbnailUrl)
+                        .into(imgThumbnail)
+                    tvDuration.text = formatDuration(firstVideo.duration)
 
-                    // Lấy danh sách video đã thích dau tien từ DatabaseHelper
-                    val videos = databaseHelper.getLikedVideos().firstOrNull() ?: emptyList()
-                    if (videos.isNotEmpty()) {
-                        val thumbnailUrl = videos.first().thumbnailUrl
-
-                        Glide.with(requireContext())
-                            .load(thumbnailUrl)
-                            .into(imgThumbnail)
-                    }
-                    //Duration
-                    val durationVideo = formatDuration(videos.first().duration)
-                    tvDuration.text = durationVideo
-                    // Phat video dau tien
                     cvItemFirst.setOnClickListener {
-                        if (videos.isNotEmpty()) {
-                            val videoId = videos.first().videoId
-                            val action = LikeVideosFragmentDirections
-                                .actionLikeVideosFragmentToVideoDetailsFragment(videoId)
-                            view?.findNavController()?.navigate(action)
-                        } else {
-                            Toast.makeText(requireContext(), "Không có video nào", Toast.LENGTH_SHORT).show()
-                        }
+                        val videoId = firstVideo.videoId
+                        val action = LikeVideosFragmentDirections.actionLikeVideosFragmentToVideoDetailsFragment(videoId)
+                        view?.findNavController()?.navigate(action)
                     }
-                    // Hiển thị số lượng video đã thích
-                    val likedVideosCount = videos.size.toString()
-                    tvVideoCount.text = "${likedVideosCount} videos"
+
+                    tvVideoCount.text = "${videos.size} videos"
+                } else {
+                    imgThumbnail.setImageResource(R.drawable.placeholder_thumbnail)
+                    tvDuration.text = ""
+                    tvVideoCount.text = "No videos"
+                    cvItemFirst.setOnClickListener(null)
                 }
-
-
             }
+        }
     }
 }

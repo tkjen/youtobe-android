@@ -32,11 +32,11 @@ class DatabaseHelperImpl @Inject constructor(
     }
 
     override suspend fun deleteLikeVideo(videoId: String) {
-        TODO("Not yet implemented")
+        videoDao.deleteLikeVideo(videoId)
     }
 
     override suspend fun deleteLikeVideo(video: LikeVideo) {
-        TODO("Not yet implemented")
+        videoDao.deleteLikeVideo(video)
     }
 
     override suspend fun getLikedVideosCount(): Int {
@@ -44,7 +44,7 @@ class DatabaseHelperImpl @Inject constructor(
     }
 
     override suspend fun clearAllLikedVideos() {
-        TODO("Not yet implemented")
+        videoDao.clearAllLikedVideos()
     }
 
     override suspend fun toggleLikeVideo(video: LikeVideo): Boolean {
