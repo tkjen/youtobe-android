@@ -15,4 +15,13 @@ class CategoryViewPagerAdapter(
     override fun createFragment(position: Int): Fragment {
         return CategoryVideosFragment.newInstance(categories[position])
     }
-} 
+
+    override fun getItemId(position: Int): Long {
+        return categories[position].hashCode().toLong()
+    }
+
+    override fun containsItem(itemId: Long): Boolean {
+        return categories.any { it.hashCode().toLong() == itemId }
+    }
+}
+

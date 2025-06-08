@@ -70,5 +70,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             tab.text = categories[position]
         }.attach()
     }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.viewPager.adapter = null
+    }
+
+
 
 }

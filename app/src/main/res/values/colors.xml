@@ -5,6 +5,9 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 
+    <color name="tab_text_unselected">#606060</color>
+    <color name="tab_text_unselected_dark">#AAAAAA</color>
+
     <!-- General Theme Colors (Light version - sẽ được override trong night) -->
     <color name="app_bg_color">#FFFFFF</color>          <!-- Nền chính của ứng dụng -->
     <color name="app_surface_color">#FFFFFF</color>    <!-- Nền cho các bề mặt như Card, Fragment -->
@@ -12,12 +15,14 @@
     <color name="app_text_primary">#DE000000</color>   <!-- Đen 87% opacity -->
     <color name="app_text_secondary">#606060</color>  <!-- Xám đậm -->
     <color name="black_overlay_20">#33000000</color>
+
     <!-- Bottom Navigation Colors (Light version) -->
     <color name="bottom_nav_background">#FFFFFF</color>
     <color name="bottom_nav_item_selected">#000000</color>
     <color name="bottom_nav_item_unselected">#606060</color>
     <color name="bottom_selected">#000000</color>  <!-- Ví dụ: Đen -->
     <color name="bottom_unselected">#606060</color><!-- Ví dụ: Xám đậm -->
+
     <!-- Placeholder for Shimmer -->
     <color name="placeholder_bg">#DDDDDD</color>
 
@@ -27,4 +32,14 @@
     <color name="surface_variant">#E7E0EC</color>
     <color name="error">#B3261E</color>
     <color name="outline">#79747E</color>
+
+    <!-- Tab colors for light theme -->
+    <color name="tab_background_default">#F2F2F2</color>
+    <color name="tab_background_default_dark">#2F2F2F</color>
+    <color name="tab_selected_text">#000000</color>
+    <color name="tab_selected_text_dark">#FFFFFF</color>
+    <color name="tab_unselected_text">#606060</color>
+    <color name="tab_unselected_text_dark">#AAAAAA</color>
+    <color name="tab_ripple_color">#20000000</color>
+    <color name="tab_ripple_color_dark">#20FFFFFF</color>
 </resources>

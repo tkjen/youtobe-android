@@ -3,7 +3,7 @@
     <!-- General Theme Colors (Dark version) -->
     <color name="app_bg_color">#0F0F0F</color>
     <color name="app_surface_color">#1A1A1A</color> <!-- Hơi khác biệt so với bg_color là tốt -->
-
+    <color name="tab_text_unselected">@color/tab_text_unselected_dark</color>
     <color name="app_text_primary">#FFFFFFFF</color>
     <color name="app_text_secondary">#AAAAAA</color>
 
@@ -24,4 +24,10 @@
     <color name="surface_variant">#49454F</color>
     <color name="error">#F2B8B5</color>
     <color name="outline">#938F99</color>
+
+    <!-- Dark theme tab colors -->
+    <color name="tab_background_default">@color/tab_background_default_dark</color>
+    <color name="tab_selected_text">@color/tab_selected_text_dark</color>
+    <color name="tab_unselected_text">@color/tab_unselected_text_dark</color>
+    <color name="tab_ripple_color">@color/tab_ripple_color_dark</color>
 </resources>
