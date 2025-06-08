@@ -49,8 +49,13 @@ class LikeVideoAdapter(private val onItemClick:(LikeVideo) ->Unit):
                     .into(ivVideoThumbnail)
 
                 itemView.setOnClickListener {
-
+                    val navController = itemView.findNavController()
+                    val videoId = likeVideo.videoId
+                    val action = com.tkjen.youtube.ui.like.LikeVideosFragmentDirections
+                        .actionLikeVideosFragmentToVideoDetailsFragment(videoId)
+                    navController.navigate(action)
                 }
+
             }
         }
 

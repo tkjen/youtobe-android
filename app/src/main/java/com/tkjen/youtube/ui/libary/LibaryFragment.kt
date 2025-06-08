@@ -1,6 +1,7 @@
 package com.tkjen.youtube.ui.libary
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import com.tkjen.youtube.utils.Result
@@ -11,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.tkjen.youtube.R
 import com.tkjen.youtube.data.local.DatabaseHelper
 import com.tkjen.youtube.data.mapper.YoutubeMapper
@@ -19,6 +21,7 @@ import com.tkjen.youtube.ui.libary.adapter.RecentVideoAdapter
 
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -42,7 +45,7 @@ class LibaryFragment: Fragment(R.layout.fragment_libary) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         observeVideos()
-
+        updateUI()
         // Load dữ liệu recent videos
         viewModel.loadRecentVideos()
 
@@ -76,6 +79,28 @@ class LibaryFragment: Fragment(R.layout.fragment_libary) {
                     }
                 }
             }
+        }
+    }
+
+    private fun updateUI() {
+        binding.apply {
+            viewLifecycleOwner.lifecycleScope.launch {
+//                val count = databaseHelper.getLikedVideosCount()
+//                tvLikeCount.text = "${count} videos"
+
+                val videos = databaseHelper.getLikedVideos().firstOrNull() ?: emptyList()
+                binding.tvLikeCount.text = "${videos.size} videos"
+                if (videos.isNotEmpty()) {
+                    val thumbnailUrl = videos.first().thumbnailUrl
+
+                    Glide.with(requireContext())
+                        .load(thumbnailUrl)
+                        .into(imgThumbnailLikedVideos)
+                }
+
+
+            }
+
         }
     }
 

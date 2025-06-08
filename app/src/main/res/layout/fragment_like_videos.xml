@@ -19,6 +19,7 @@
 
             <!-- Video thumbnail with play overlay -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/cv_item_first"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
@@ -56,7 +57,7 @@
                         android:focusable="true"
                         android:foreground="?attr/selectableItemBackgroundBorderless"
                         app:tint="@color/white"
-                        android:contentDescription="Play video" />
+                         />
 
                     <!-- Duration badge -->
                     <TextView
@@ -195,6 +196,7 @@
                         tools:listitem="@layout/item_like_video"
                         android:clipToPadding="false"
                         android:padding="10dp"
+
                         />
 
             </LinearLayout>

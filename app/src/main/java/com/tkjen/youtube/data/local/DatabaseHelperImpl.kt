@@ -40,7 +40,7 @@ class DatabaseHelperImpl @Inject constructor(
     }
 
     override suspend fun getLikedVideosCount(): Int {
-        TODO("Not yet implemented")
+        return videoDao.getLikedVideosCount()
     }
 
     override suspend fun clearAllLikedVideos() {

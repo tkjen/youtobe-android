@@ -17,6 +17,7 @@ interface DatabaseHelper {
     suspend fun isVideoLiked(videoId: String): Boolean
     suspend fun deleteLikeVideo(videoId: String)
     suspend fun deleteLikeVideo(video: LikeVideo)
+
     suspend fun getLikedVideosCount(): Int
     suspend fun clearAllLikedVideos()
 

@@ -152,7 +152,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Playlists"
-                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:layout_weight="1"
                     />
                 <TextView
@@ -180,8 +181,9 @@
                 android:layout_marginTop="10dp"
                 >
         <ImageView
-            android:layout_width="42dp"
-            android:layout_height="42dp"
+            android:id="@+id/img_thumbnail_liked_videos"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@color/black"
             />
                 <LinearLayout
@@ -197,6 +199,7 @@
                 android:textColor="@color/app_text_primary"
                 />
                     <TextView
+                        android:id="@+id/tv_like_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="50 videos"

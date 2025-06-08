@@ -65,6 +65,11 @@
     <fragment
         android:id="@+id/likeVideosFragment"
         android:name="com.tkjen.youtube.ui.like.LikeVideosFragment"
-        android:label="LikeVideosFragment" />
+        android:label="LikeVideosFragment"
+        tools:layout="@layout/fragment_like_videos">
+        <action
+            android:id="@+id/action_likeVideosFragment_to_videoDetailsFragment"
+            app:destination="@id/videoDetailsFragment" />
+    </fragment>
 
 </navigation>

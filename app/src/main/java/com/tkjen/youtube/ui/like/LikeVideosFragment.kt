@@ -1,12 +1,16 @@
 package com.tkjen.youtube.ui.like
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.tkjen.youtube.R
 import com.tkjen.youtube.data.local.DatabaseHelper
 import com.tkjen.youtube.databinding.FragmentLikeVideosBinding
@@ -16,6 +20,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.tkjen.youtube.utils.Result
+import com.tkjen.youtube.utils.formatDuration
+import kotlinx.coroutines.flow.firstOrNull
 
 @AndroidEntryPoint
 class LikeVideosFragment:Fragment(R.layout.fragment_like_videos) {
@@ -27,9 +33,9 @@ class LikeVideosFragment:Fragment(R.layout.fragment_like_videos) {
     @Inject
     lateinit var databaseHelper: DatabaseHelper
     override fun onCreateView(
-        inflater: android.view.LayoutInflater,
-        container: android.view.ViewGroup?,
-        savedInstanceState: android.os.Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         binding = FragmentLikeVideosBinding.inflate(inflater, container, false)
         return binding.root
@@ -39,14 +45,14 @@ class LikeVideosFragment:Fragment(R.layout.fragment_like_videos) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         observeVideos()
+        updateUi()
 
-        // Load dữ liệu liked videos
         viewModel.loadLikedVideos()
     }
 
  private fun setupRecyclerView() {
         likeVideoAdapter = LikeVideoAdapter { onItemClick ->
-            // Handle item click if needed
+
         }
         binding.rvLikeVideos.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -73,5 +79,41 @@ class LikeVideosFragment:Fragment(R.layout.fragment_like_videos) {
             }
         }
 
+    }
+
+    private fun updateUi(){
+            binding.apply {
+                viewLifecycleOwner.lifecycleScope.launch {
+
+                    // Lấy danh sách video đã thích dau tien từ DatabaseHelper
+                    val videos = databaseHelper.getLikedVideos().firstOrNull() ?: emptyList()
+                    if (videos.isNotEmpty()) {
+                        val thumbnailUrl = videos.first().thumbnailUrl
+
+                        Glide.with(requireContext())
+                            .load(thumbnailUrl)
+                            .into(imgThumbnail)
+                    }
+                    //Duration
+                    val durationVideo = formatDuration(videos.first().duration)
+                    tvDuration.text = durationVideo
+                    // Phat video dau tien
+                    cvItemFirst.setOnClickListener {
+                        if (videos.isNotEmpty()) {
+                            val videoId = videos.first().videoId
+                            val action = LikeVideosFragmentDirections
+                                .actionLikeVideosFragmentToVideoDetailsFragment(videoId)
+                            view?.findNavController()?.navigate(action)
+                        } else {
+                            Toast.makeText(requireContext(), "Không có video nào", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    // Hiển thị số lượng video đã thích
+                    val likedVideosCount = videos.size.toString()
+                    tvVideoCount.text = "${likedVideosCount} videos"
+                }
+
+
+            }
     }
 }
