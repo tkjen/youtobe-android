@@ -9,5 +9,7 @@ data class LikeVideo(
     val thumbnailUrl: String?,
     val duration: String,
     val channelName: String,
+    val viewCount: String?,
+    val publishedAt: String?,
     val lastViewed: Long =  System.currentTimeMillis()
 )

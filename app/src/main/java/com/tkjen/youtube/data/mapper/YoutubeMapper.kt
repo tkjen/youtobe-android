@@ -28,6 +28,8 @@ object YoutubeMapper {
                 ?: videoItem.snippet.thumbnails.default?.url,
             duration = videoItem.contentDetails?.duration ?: "PT0S",
             channelName = videoItem.snippet.channelTitle,
+            viewCount = videoItem.statistics?.viewCount ?: "0",
+            publishedAt = videoItem.snippet.publishedAt,
             lastViewed = System.currentTimeMillis()
         )
     }

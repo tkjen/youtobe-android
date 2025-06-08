@@ -188,24 +188,15 @@
                     </LinearLayout>
                 </LinearLayout>
 
-
-                <!-- Playlist content section -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:orientation="vertical">
-
-                    <!-- Section header -->
-
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_like_videos"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         tools:listitem="@layout/item_like_video"
-                        tools:itemCount="5"
+                        android:clipToPadding="false"
+                        android:padding="10dp"
                         />
-                </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

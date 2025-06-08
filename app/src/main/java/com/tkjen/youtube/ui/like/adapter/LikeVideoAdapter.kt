@@ -1,0 +1,59 @@
+package com.tkjen.youtube.ui.like.adapter
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.tkjen.youtube.R
+import com.tkjen.youtube.data.local.entity.LikeVideo
+import com.tkjen.youtube.databinding.ItemLikeVideoBinding
+import com.tkjen.youtube.utils.formatDuration
+import com.tkjen.youtube.utils.formatTimeAgo
+import com.tkjen.youtube.utils.formatViewCount
+
+class LikeVideoAdapter(private val onItemClick:(LikeVideo) ->Unit):
+    ListAdapter<LikeVideo,LikeVideoAdapter.LikeVideoViewHolder>(LikeVideoDiffCallback()) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LikeVideoViewHolder {
+        val binding = ItemLikeVideoBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return LikeVideoViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: LikeVideoViewHolder, position: Int) {
+        val video = getItem(position)
+        holder.bind(video)
+    }
+
+    class LikeVideoViewHolder(
+        private val binding: ItemLikeVideoBinding
+    ):
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(likeVideo: LikeVideo) {
+            binding.apply {
+                tvChannelName.text = likeVideo.channelName
+                tvVideoTitle.text = likeVideo.videoTitle
+                tvVideoDuration.text = formatDuration(likeVideo.duration)
+                tvViewCount.text = formatViewCount(likeVideo.viewCount)
+                tvTimeAgo.text = formatTimeAgo(likeVideo.publishedAt)
+                Glide.with(ivVideoThumbnail.context)
+                    .load(likeVideo.thumbnailUrl)
+                    .placeholder(R.drawable.placeholder_thumbnail)
+                    .error(R.drawable.placeholder_thumbnail)
+                    .into(ivVideoThumbnail)
+
+                itemView.setOnClickListener {
+
+                }
+            }
+        }
+
+    }
+
+}

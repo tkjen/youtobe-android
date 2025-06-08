@@ -19,16 +19,11 @@ import com.tkjen.youtube.utils.Result
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-/**
- * Fragment hiển thị danh sách Shorts
- * - Quản lý việc phát/dừng video khi scroll
- * - Xử lý lifecycle của video player
- */
+
 @AndroidEntryPoint
 class ShortsFragment : Fragment(R.layout.fragment_shorts) {
 
-    private var _binding: FragmentShortsBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentShortsBinding
 
     private val viewModel: ShortsViewModel by viewModels()
     private lateinit var shortsAdapter: ShortsAdapter
@@ -36,7 +31,7 @@ class ShortsFragment : Fragment(R.layout.fragment_shorts) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentShortsBinding.bind(view)
+        binding = FragmentShortsBinding.bind(view)
 
         setupSystemBars()
         setupRecyclerView()
@@ -173,9 +168,4 @@ class ShortsFragment : Fragment(R.layout.fragment_shorts) {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        pauseCurrentVideo(binding.rvShorts)
-        _binding = null
-    }
 }
