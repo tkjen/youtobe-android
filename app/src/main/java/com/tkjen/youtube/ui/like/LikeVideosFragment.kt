@@ -113,7 +113,7 @@ class LikeVideosFragment : Fragment(R.layout.fragment_like_videos) {
 
                     cvItemFirst.setOnClickListener {
                         val videoId = firstVideo.videoId
-                        val action = LikeVideosFragmentDirections.actionLikeVideosFragmentToVideoDetailsFragment(videoId)
+                        val action = LikeVideosFragmentDirections.actionLikeVideosFragmentToVideoDetailsLikeFragment(videoId)
                         view?.findNavController()?.navigate(action)
                     }
 

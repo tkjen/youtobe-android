@@ -91,6 +91,11 @@ class VideoAdapter(
                                 .actionVideoDetailsFragmentSelf(videoId)
                             navController.navigate(action)
                         }
+                        R.id.videoDetailsLikeFragment -> {
+                            val action = com.tkjen.youtube.ui.like.VideoDetailsLikeFragmentDirections
+                                .actionVideoDetailsLikeFragmentSelf(videoId)
+                            navController.navigate(action)
+                        }
                         else -> {
                             val action = com.tkjen.youtube.ui.home.HomeFragmentDirections
                                 .actionHomeFragmentToVideoDetailsFragment(videoId)

@@ -30,4 +30,8 @@
     <color name="tab_selected_text">@color/tab_selected_text_dark</color>
     <color name="tab_unselected_text">@color/tab_unselected_text_dark</color>
     <color name="tab_ripple_color">@color/tab_ripple_color_dark</color>
+    <color name="bg_music_bar">#CC000000</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#CCCCCC</color>
+    <color name="icon_tint">#FFFFFF</color>
 </resources>

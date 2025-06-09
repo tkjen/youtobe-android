@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_homeFragment_to_shortsFragment"
             app:destination="@id/shortsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_videoDetailsLikeFragment"
+            app:destination="@id/videoDetailsLikeFragment" />
     </fragment>
 
     <fragment
@@ -68,8 +71,23 @@
         android:label="LikeVideosFragment"
         tools:layout="@layout/fragment_like_videos">
         <action
-            android:id="@+id/action_likeVideosFragment_to_videoDetailsFragment"
-            app:destination="@id/videoDetailsFragment" />
+            android:id="@+id/action_likeVideosFragment_to_videoDetailsLikeFragment"
+            app:destination="@id/videoDetailsLikeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/videoDetailsLikeFragment"
+        android:name="com.tkjen.youtube.ui.like.VideoDetailsLikeFragment"
+        android:label="VideoDetailsLikeFragment"
+        tools:layout="@layout/fragment_video_details_like">
+
+        <argument
+            android:name="videoId"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_videoDetailsLikeFragment_self"
+            app:destination="@id/videoDetailsLikeFragment" />
+    </fragment>
+
 
 </navigation>

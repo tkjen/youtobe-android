@@ -58,6 +58,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.icProfile.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_settingsFragment)
         }
+        binding.icSearch.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_videoDetailsLikeFragment)
+        }
     }
 
     private fun setupViewPager() {

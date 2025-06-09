@@ -42,4 +42,9 @@
     <color name="tab_unselected_text_dark">#AAAAAA</color>
     <color name="tab_ripple_color">#20000000</color>
     <color name="tab_ripple_color_dark">#20FFFFFF</color>
+
+    <color name="bg_music_bar">#F0F0F0</color>
+    <color name="text_primary">#000000</color>
+    <color name="text_secondary">#666666</color>
+    <color name="icon_tint">#000000</color>
 </resources>
