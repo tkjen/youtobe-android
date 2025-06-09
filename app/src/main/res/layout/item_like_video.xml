@@ -7,7 +7,7 @@
     app:cardCornerRadius="4dp"
     app:cardElevation="0dp"
     android:layout_margin="5dp"
-    app:cardBackgroundColor="?attr/colorSurface"
+    android:background="?android:attr/colorBackground"
     >
 
     <LinearLayout
@@ -40,12 +40,7 @@
                 tools:ignore="SmallSp"
                 tools:text="0:50" />
 
-            <View
-                android:id="@+id/view_progress_bar"
-                android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:layout_gravity="bottom"
-                android:background="@color/youtube_red" />
+
         </FrameLayout>
 
         <!-- Right side - Video information -->
@@ -54,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
+            android:background="?android:attr/colorBackground"
             android:padding="8dp">
 
             <LinearLayout

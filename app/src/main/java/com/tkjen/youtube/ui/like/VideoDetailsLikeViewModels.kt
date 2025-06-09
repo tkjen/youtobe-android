@@ -3,6 +3,8 @@ package com.tkjen.youtube.ui.like
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tkjen.youtube.data.local.DatabaseHelper
+import com.tkjen.youtube.data.local.entity.LikeVideo
 import com.tkjen.youtube.data.model.VideoItem
 import com.tkjen.youtube.data.repository.YoutubeRepository
 import com.tkjen.youtube.utils.Result
@@ -15,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class VideoDetailsLikeViewModels @Inject constructor(
-    private val repository: YoutubeRepository
+    private val repository: YoutubeRepository,
+    private val databaseHelper: DatabaseHelper
 ) : ViewModel() {
 
     // State cho thông tin chi tiết video
@@ -29,7 +32,9 @@ class VideoDetailsLikeViewModels @Inject constructor(
     // State cho số lượng subscriber của kênh
     private val _subscriberCount = MutableStateFlow("0")
     val subscriberCount: StateFlow<String> = _subscriberCount.asStateFlow()
-
+    // State cho danh sách video đã thích
+    private val _videoLike = MutableStateFlow<Result<List<LikeVideo>>>(Result.Loading)
+    val videoLike: StateFlow<Result<List<LikeVideo>>> = _videoLike.asStateFlow()
     // Lưu channel ID và video ID hiện tại
     private var currentChannelId: String? = null
     private var currentVideoId: String? = null
@@ -125,6 +130,18 @@ class VideoDetailsLikeViewModels @Inject constructor(
             } catch (e: Exception) {
                 Log.e("VideoDetailsViewModel", "Error loading popular videos: ${e.message}")
                 _videos.value = Result.Error("Failed to load popular videos: ${e.message}")
+            }
+        }
+    }
+    fun loadLikedVideos() {
+        viewModelScope.launch {
+            _videoLike.value = Result.Loading
+            databaseHelper.getLikedVideos().collect { videos ->
+                if (videos.isEmpty()) {
+                    _videoLike.value = Result.Error("No liked videos found")
+                } else {
+                    _videoLike.value = Result.Success(videos)
+                }
             }
         }
     }

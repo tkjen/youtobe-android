@@ -20,6 +20,7 @@ import com.tkjen.youtube.databinding.FragmentLikeVideosBinding
 import com.tkjen.youtube.databinding.FragmentVideoDetailsBinding
 import com.tkjen.youtube.databinding.FragmentVideoDetailsLikeBinding
 import com.tkjen.youtube.ui.home.adapter.VideoAdapter
+import com.tkjen.youtube.ui.like.adapter.LikeVideoAdapter
 import com.tkjen.youtube.ui.video_details.VideoDetailsFragmentArgs
 import com.tkjen.youtube.ui.video_details.VideoDetailsViewModel
 import com.tkjen.youtube.utils.Result
@@ -35,7 +36,7 @@ class VideoDetailsLikeFragment: Fragment(R.layout.fragment_video_details_like) {
 
     private lateinit var binding: FragmentVideoDetailsLikeBinding
 
-    private val viewModel: VideoDetailsViewModel by viewModels()
+    private val viewModel: VideoDetailsLikeViewModels by viewModels()
     private val args: VideoDetailsFragmentArgs by navArgs()
     private lateinit var videoAdapter: VideoAdapter
     private var youTubePlayer: YouTubePlayer? = null
@@ -43,7 +44,7 @@ class VideoDetailsLikeFragment: Fragment(R.layout.fragment_video_details_like) {
     private var currentVideoId: String? = null
     @Inject
     lateinit var  databaseHelper: DatabaseHelper
-
+    private lateinit var likeVideoAdapter: LikeVideoAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
@@ -83,6 +84,16 @@ class VideoDetailsLikeFragment: Fragment(R.layout.fragment_video_details_like) {
         binding.recyclerViewVideos.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = videoAdapter
+        }
+        likeVideoAdapter = LikeVideoAdapter(
+            onItemClick = { video ->
+                // Xử lý click item ở đây nếu cần
+            }
+        )
+
+        binding.rvLikeVideos.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = likeVideoAdapter
         }
     }
 
@@ -136,6 +147,21 @@ class VideoDetailsLikeFragment: Fragment(R.layout.fragment_video_details_like) {
                     }
                     else -> {
                         binding.recyclerViewVideos.visibility = View.GONE
+                    }
+                }
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.videoLike.collectLatest { result ->
+                when (result) {
+                    is Result.Loading -> {
+                        // TODO: show loading if needed
+                    }
+                    is Result.Success -> {
+                        likeVideoAdapter.submitList(result.data)
+                    }
+                    is Result.Error -> {
+                        Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -215,6 +241,28 @@ class VideoDetailsLikeFragment: Fragment(R.layout.fragment_video_details_like) {
                 val isCollapsed = tvDescription.maxLines == 3
                 tvDescription.maxLines = if (isCollapsed) Int.MAX_VALUE else 3
                 btnShowMore.text = if (isCollapsed) "Thu gọn" else "Hiển thị thêm"
+            }
+            btnCollapse.setOnClickListener {
+                // Show playlist
+                playlistContainer.visibility = View.VISIBLE
+                lnListLikeVideos.visibility = View.GONE
+
+                // Change arrow direction
+                btnCollapse.setImageResource(R.drawable.ic_keyboard_arrow_down)
+                // Debug: Check if adapter has data
+                Log.d("PlaylistToggle", "Liked videos count: ${likeVideoAdapter.itemCount}")
+
+                // Force refresh the liked videos data
+                viewModel.loadLikedVideos() // Add this method to your ViewModel
+            }
+
+            btnClosePlaylist.setOnClickListener {
+                // Hide playlist
+                playlistContainer.visibility = View.GONE
+                lnListLikeVideos.visibility = View.VISIBLE
+
+                // Reset arrow direction
+                btnCollapse.setImageResource(R.drawable.ic_keyboard_arrow_up)
             }
         }
     }

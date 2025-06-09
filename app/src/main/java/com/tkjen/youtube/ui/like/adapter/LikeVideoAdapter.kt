@@ -9,6 +9,8 @@ import com.bumptech.glide.Glide
 import com.tkjen.youtube.R
 import com.tkjen.youtube.data.local.entity.LikeVideo
 import com.tkjen.youtube.databinding.ItemLikeVideoBinding
+import com.tkjen.youtube.ui.like.VideoDetailsLikeFragment
+import com.tkjen.youtube.ui.like.VideoDetailsLikeFragmentArgs
 import com.tkjen.youtube.utils.formatDuration
 import com.tkjen.youtube.utils.formatTimeAgo
 import com.tkjen.youtube.utils.formatViewCount
@@ -51,10 +53,21 @@ class LikeVideoAdapter(private val onItemClick:(LikeVideo) ->Unit):
                 itemView.setOnClickListener {
                     val navController = itemView.findNavController()
                     val videoId = likeVideo.videoId
+
+                    val currentDestinationId = navController.currentDestination?.id
                     val action = com.tkjen.youtube.ui.like.LikeVideosFragmentDirections
                         .actionLikeVideosFragmentToVideoDetailsLikeFragment(videoId)
-                    navController.navigate(action)
+
+                    if (currentDestinationId == R.id.videoDetailsLikeFragment) {
+                        navController.navigate(
+                            R.id.action_videoDetailsLikeFragment_self,
+                           VideoDetailsLikeFragmentArgs(videoId).toBundle()
+                        )
+                    } else {
+                        navController.navigate(action)
+                    }
                 }
+
 
             }
         }
