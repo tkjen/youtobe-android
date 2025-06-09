@@ -19,9 +19,6 @@
         <action
             android:id="@+id/action_homeFragment_to_shortsFragment"
             app:destination="@id/shortsFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_videoDetailsLikeFragment"
-            app:destination="@id/videoDetailsLikeFragment" />
     </fragment>
 
     <fragment
