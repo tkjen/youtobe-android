@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -71,6 +72,8 @@ class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
             lifecycleScope.launch {
                 val recentVideo = YoutubeMapper.toRecentVideo(clickVideo)
                 databaseHelper.insertRecentVideo(recentVideo)
+                val action = VideoDetailsFragmentDirections.actionVideoDetailsFragmentSelf(clickVideo.id)
+                findNavController().navigate(action)
                 Log.d("CategoryVideosFragment", "Lưu video thành công: ${recentVideo.videoTitle}")
             }
 

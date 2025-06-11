@@ -67,41 +67,9 @@ class VideoAdapter(
                 }
 
                 itemView.setOnClickListener {
-                    onVideoClicked(video) // 👈 Gọi callback khi click
+                    onVideoClicked(video)
 
-                    val navController = itemView.findNavController()
-                    val currentDestination = navController.currentDestination
-                    val videoId = video.id
 
-                    Log.d("VideoAdapter", "Navigating to video with ID: $videoId")
-
-                    when (currentDestination?.id) {
-                        R.id.homeFragment -> {
-                            val action = com.tkjen.youtube.ui.home.HomeFragmentDirections
-                                .actionHomeFragmentToVideoDetailsFragment(videoId)
-                            navController.navigate(action)
-                        }
-                        R.id.libaryFragment -> {
-                            val action = com.tkjen.youtube.ui.libary.LibaryFragmentDirections
-                                .actionLibaryFragmentToVideoDetailsFragment(videoId)
-                            navController.navigate(action)
-                        }
-                        R.id.videoDetailsFragment -> {
-                            val action = com.tkjen.youtube.ui.video_details.VideoDetailsFragmentDirections
-                                .actionVideoDetailsFragmentSelf(videoId)
-                            navController.navigate(action)
-                        }
-                        R.id.videoDetailsLikeFragment -> {
-                            val action = com.tkjen.youtube.ui.like.VideoDetailsLikeFragmentDirections
-                                .actionVideoDetailsLikeFragmentSelf(videoId)
-                            navController.navigate(action)
-                        }
-                        else -> {
-                            val action = com.tkjen.youtube.ui.home.HomeFragmentDirections
-                                .actionHomeFragmentToVideoDetailsFragment(videoId)
-                            navController.navigate(action)
-                        }
-                    }
                 }
             }
         }

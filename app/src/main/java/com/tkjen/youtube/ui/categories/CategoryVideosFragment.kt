@@ -9,10 +9,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tkjen.youtube.data.local.DatabaseHelper
 import com.tkjen.youtube.data.mapper.YoutubeMapper
 import com.tkjen.youtube.databinding.FragmentCategoryVideosBinding
+import com.tkjen.youtube.ui.home.HomeFragment
+import com.tkjen.youtube.ui.home.HomeFragmentDirections
 import com.tkjen.youtube.ui.home.adapter.VideoAdapter
 import com.tkjen.youtube.utils.Result
 import dagger.hilt.android.AndroidEntryPoint
@@ -58,7 +61,10 @@ class CategoryVideosFragment : Fragment() {
                 lifecycleScope.launch {
                     val recentVideo = YoutubeMapper.toRecentVideo(clickVideo)
                     databaseHelper.insertRecentVideo(recentVideo)
-                    Log.d("CategoryVideosFragment", "Lưu video thành công: ${recentVideo.videoTitle}")
+
+
+                    val action = HomeFragmentDirections.actionHomeFragmentToVideoDetailsFragment(clickVideo.id)
+                    findNavController().navigate(action)
                 }
 
             }

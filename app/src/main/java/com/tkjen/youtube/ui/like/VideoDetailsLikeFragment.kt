@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -61,10 +62,10 @@ class VideoDetailsLikeFragment: Fragment(R.layout.fragment_video_details_like) {
         // Load dữ liệu video
         currentVideoId?.let { viewModel.loadVideoDetails(it) }
 
-        if(binding.btnCollapse.visibility == View.VISIBLE) {
-                binding.lnActionButtons.visibility = View.GONE
+
+
             viewModel.loadLikedVideos()
-        }
+
 
     }
     private fun setupYouTubePlayer() {
@@ -85,6 +86,10 @@ class VideoDetailsLikeFragment: Fragment(R.layout.fragment_video_details_like) {
             lifecycleScope.launch {
                 val recentVideo = YoutubeMapper.toRecentVideo(clickVideo)
                 databaseHelper.insertRecentVideo(recentVideo)
+
+                val action = VideoDetailsLikeFragmentDirections.actionVideoDetailsLikeFragmentToVideoDetailsFragment(clickVideo.id)
+
+                findNavController().navigate(action)
                 Log.d("CategoryVideosFragment", "Lưu video thành công: ${recentVideo.videoTitle}")
             }
 
@@ -195,9 +200,6 @@ class VideoDetailsLikeFragment: Fragment(R.layout.fragment_video_details_like) {
                 .placeholder(R.drawable.placeholder_avatar)
                 .circleCrop()
                 .into(ivChannelAvatar)
-
-
-
 
         }
 

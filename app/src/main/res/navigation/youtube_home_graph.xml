@@ -84,6 +84,9 @@
         <action
             android:id="@+id/action_videoDetailsLikeFragment_self"
             app:destination="@id/videoDetailsLikeFragment" />
+        <action
+            android:id="@+id/action_videoDetailsLikeFragment_to_videoDetailsFragment"
+            app:destination="@id/videoDetailsFragment" />
 
     </fragment>
 
