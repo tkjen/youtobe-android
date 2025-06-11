@@ -28,6 +28,7 @@ import com.tkjen.youtube.utils.formatTimeAgo
 import com.tkjen.youtube.utils.formatViewCount
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -56,8 +57,15 @@ class VideoDetailsLikeFragment: Fragment(R.layout.fragment_video_details_like) {
         setupClickListeners()
         observeViewModel()
 
+
         // Load dữ liệu video
         currentVideoId?.let { viewModel.loadVideoDetails(it) }
+
+        if(binding.btnCollapse.visibility == View.VISIBLE) {
+                binding.lnActionButtons.visibility = View.GONE
+            viewModel.loadLikedVideos()
+        }
+
     }
     private fun setupYouTubePlayer() {
         lifecycle.addObserver(binding.youtubePlayerView)
@@ -111,6 +119,7 @@ class VideoDetailsLikeFragment: Fragment(R.layout.fragment_video_details_like) {
                             youTubePlayer?.loadVideo(video.id, 0f)
                         }
 
+
                     }
                     is Result.Error -> {
                         Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()
@@ -124,6 +133,7 @@ class VideoDetailsLikeFragment: Fragment(R.layout.fragment_video_details_like) {
                 binding.tvSubscriberCount.text = "$count Subscribers"
             }
 
+
             // Quan sát danh sách video liên quan
 
 
@@ -136,6 +146,7 @@ class VideoDetailsLikeFragment: Fragment(R.layout.fragment_video_details_like) {
                         if (result.data.isNotEmpty()) {
                             binding.recyclerViewVideos.visibility = View.VISIBLE
                             videoAdapter.submitList(result.data)
+
                         } else {
                             binding.recyclerViewVideos.visibility = View.GONE
                         }
@@ -155,10 +166,12 @@ class VideoDetailsLikeFragment: Fragment(R.layout.fragment_video_details_like) {
             viewModel.videoLike.collectLatest { result ->
                 when (result) {
                     is Result.Loading -> {
-                        // TODO: show loading if needed
+
                     }
                     is Result.Success -> {
                         likeVideoAdapter.submitList(result.data)
+                        binding.tvTitle.text = viewModel.getNextVideoTitle() ?: "Không có video tiếp theo"
+
                     }
                     is Result.Error -> {
                         Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()
@@ -184,10 +197,17 @@ class VideoDetailsLikeFragment: Fragment(R.layout.fragment_video_details_like) {
                 .into(ivChannelAvatar)
 
 
+
+
         }
+
         viewLifecycleOwner.lifecycleScope.launch {
             val isLiked = databaseHelper.isVideoLiked(args.videoId)
             updateLikeIcon(isLiked)
+            val videos = databaseHelper.getLikedVideos().firstOrNull() ?: emptyList()
+            val videoNow = viewModel.getCurrentVideoIndex()
+            binding.tvDuration.text = "${videoNow}/${videos.size}"
+            binding.tvPlaylistCount.text = binding.tvDuration.text
         }
 
     }
@@ -243,24 +263,17 @@ class VideoDetailsLikeFragment: Fragment(R.layout.fragment_video_details_like) {
                 btnShowMore.text = if (isCollapsed) "Thu gọn" else "Hiển thị thêm"
             }
             btnCollapse.setOnClickListener {
-                // Show playlist
                 playlistContainer.visibility = View.VISIBLE
-                lnListLikeVideos.visibility = View.GONE
-
-                // Change arrow direction
+                lnListLikeVideos.visibility = View.VISIBLE
+                viewModel.loadLikedVideos()
                 btnCollapse.setImageResource(R.drawable.ic_keyboard_arrow_down)
-                // Debug: Check if adapter has data
-                Log.d("PlaylistToggle", "Liked videos count: ${likeVideoAdapter.itemCount}")
-
-                // Force refresh the liked videos data
-                viewModel.loadLikedVideos() // Add this method to your ViewModel
             }
 
             btnClosePlaylist.setOnClickListener {
                 // Hide playlist
                 playlistContainer.visibility = View.GONE
                 lnListLikeVideos.visibility = View.VISIBLE
-
+                binding.lnActionButtons.visibility = View.VISIBLE
                 // Reset arrow direction
                 btnCollapse.setImageResource(R.drawable.ic_keyboard_arrow_up)
             }
@@ -278,4 +291,5 @@ class VideoDetailsLikeFragment: Fragment(R.layout.fragment_video_details_like) {
             if (isLiked) R.drawable.ic_liked else R.drawable.ic_thumb_up
         )
     }
+
 }

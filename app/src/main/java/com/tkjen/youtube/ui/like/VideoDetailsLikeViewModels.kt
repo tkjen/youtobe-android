@@ -39,6 +39,8 @@ class VideoDetailsLikeViewModels @Inject constructor(
     private var currentChannelId: String? = null
     private var currentVideoId: String? = null
 
+
+
     /**
      * Load thông tin chi tiết của video và số lượng subscriber của kênh
      */
@@ -115,10 +117,33 @@ class VideoDetailsLikeViewModels @Inject constructor(
             }
         }
     }
+    fun getNextVideoTitle(): String? {
+        val currentList = (_videoLike.value as? Result.Success)?.data ?: return null
+        val currentIndex = currentList.indexOfFirst { it.videoId == currentVideoId }
 
-    /**
-     * Load danh sách video phổ biến
-     */
+        return if (currentIndex != -1 && currentIndex + 1 < currentList.size) {
+            currentList[currentIndex + 1].videoTitle
+        } else {
+            null // Không có video tiếp theo
+        }
+    }
+    fun getCurrentVideoIndex(): Int {
+        // Bước 1: Lấy danh sách các video đã thích, nếu không có thì trả -1
+        val likedVideos = (_videoLike.value as? Result.Success)?.data ?: return -1
+
+        // Bước 2: Tìm vị trí (đếm từ 0) của video hiện tại trong danh sách
+        val zeroBasedIndex = likedVideos.indexOfFirst { it.videoId == currentVideoId }
+
+        // Bước 3: Nếu tìm được (>= 0), chuyển sang vị trí đếm từ 1 để người dùng dễ hiểu
+        return if (zeroBasedIndex >= 0) {
+            zeroBasedIndex + 1
+        } else {
+            // Nếu không tìm thấy, trả về -1
+            -1
+        }
+    }
+
+
     private fun loadPopularVideos() {
         viewModelScope.launch {
             try {
