@@ -33,6 +33,18 @@ object YoutubeMapper {
             lastViewed = System.currentTimeMillis()
         )
     }
+    fun toRecentVideo(likeVideo: LikeVideo): RecentVideo {
+        return RecentVideo(
+            videoId = likeVideo.videoId,
+            videoTitle = likeVideo.videoTitle,
+            channelName = likeVideo.channelName,
+            thumbnailUrl = likeVideo.thumbnailUrl,
+            duration = likeVideo.duration,
+            publishedAt = likeVideo.publishedAt,
+            lastViewed = System.currentTimeMillis()
+        )
+    }
+
 
 
 }

@@ -31,7 +31,7 @@ abstract class DatabaseModule {
                 appContext,
                 AppDatabase::class.java,
                 "youtube-database"
-            ).fallbackToDestructiveMigration()
+            ).fallbackToDestructiveMigration(true)
                 .build()
         }
 

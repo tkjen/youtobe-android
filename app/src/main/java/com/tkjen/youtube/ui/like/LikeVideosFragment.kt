@@ -1,6 +1,7 @@
 package com.tkjen.youtube.ui.like
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.tkjen.youtube.R
 import com.tkjen.youtube.data.local.DatabaseHelper
+import com.tkjen.youtube.data.local.entity.LikeVideo
+import com.tkjen.youtube.data.mapper.YoutubeMapper
 import com.tkjen.youtube.databinding.FragmentLikeVideosBinding
 import com.tkjen.youtube.ui.like.adapter.LikeVideoAdapter
 import com.tkjen.youtube.utils.Result
@@ -29,11 +32,8 @@ import javax.inject.Inject
 class LikeVideosFragment : Fragment(R.layout.fragment_like_videos) {
 
     private lateinit var binding: FragmentLikeVideosBinding
-    private val viewModel: LikeVideosViewModels by viewModels()
+    private val viewModel: LikeVideosViewModel by viewModels()
     private lateinit var likeVideoAdapter: LikeVideoAdapter
-
-    @Inject
-    lateinit var databaseHelper: DatabaseHelper
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,16 +48,13 @@ class LikeVideosFragment : Fragment(R.layout.fragment_like_videos) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         observeVideos()
-        updateUi()
         viewModel.loadLikedVideos()
     }
 
     private fun setupRecyclerView() {
-        likeVideoAdapter = LikeVideoAdapter(
-            onItemClick = { video ->
-                // Xử lý click item ở đây nếu cần
-            }
-        )
+        likeVideoAdapter = LikeVideoAdapter { video ->
+            viewModel.insertRecentFromLike(video)
+        }
 
         binding.rvLikeVideos.apply {
             layoutManager = LinearLayoutManager(context)
@@ -66,16 +63,9 @@ class LikeVideosFragment : Fragment(R.layout.fragment_like_videos) {
 
         val itemTouchHelper = ItemTouchHelper(
             SwipeToDeleteCallback(requireContext()) { position ->
-                val video = likeVideoAdapter.currentList.getOrNull(position)
-                if (video != null) {
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        databaseHelper.deleteLikeVideo(video)
-                        val updatedList = likeVideoAdapter.currentList.toMutableList()
-                        updatedList.removeAt(position)
-                        likeVideoAdapter.submitList(updatedList)
-                        Toast.makeText(context,"Remove video ${video.videoTitle}", Toast.LENGTH_SHORT).show()
-                        updateUi()
-                    }
+                likeVideoAdapter.currentList.getOrNull(position)?.let { video ->
+                    viewModel.deleteLikeVideo(video)
+                    Toast.makeText(context, "Removed ${video.videoTitle}", Toast.LENGTH_SHORT).show()
                 }
             }
         )
@@ -84,46 +74,37 @@ class LikeVideosFragment : Fragment(R.layout.fragment_like_videos) {
 
     private fun observeVideos() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.video.collectLatest { result ->
+            viewModel.videos.collectLatest { result ->
                 when (result) {
-                    is Result.Loading -> {
-                        // TODO: show loading if needed
-                    }
+                    is Result.Loading -> { /* show loading UI if needed */ }
+                    is Result.Error -> { /* show error UI */ }
                     is Result.Success -> {
-                        likeVideoAdapter.submitList(result.data)
-                    }
-                    is Result.Error -> {
-                        Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()
+                        val videos = result.data
+                        likeVideoAdapter.submitList(videos)
+                        updateUi(videos)
                     }
                 }
             }
         }
     }
 
-    private fun updateUi() {
+    private fun updateUi(videos: List<LikeVideo>) {
         binding.apply {
-            viewLifecycleOwner.lifecycleScope.launch {
-                val videos = databaseHelper.getLikedVideos().firstOrNull() ?: emptyList()
-                if (videos.isNotEmpty()) {
-                    val firstVideo = videos.first()
-                    Glide.with(requireContext())
-                        .load(firstVideo.thumbnailUrl)
-                        .into(imgThumbnail)
-                    tvDuration.text = formatDuration(firstVideo.duration)
-
-                    cvItemFirst.setOnClickListener {
-                        val videoId = firstVideo.videoId
-                        val action = LikeVideosFragmentDirections.actionLikeVideosFragmentToVideoDetailsLikeFragment(videoId)
-                        view?.findNavController()?.navigate(action)
-                    }
-
-                    tvVideoCount.text = "${videos.size} videos"
-                } else {
-                    imgThumbnail.setImageResource(R.drawable.placeholder_thumbnail)
-                    tvDuration.text = ""
-                    tvVideoCount.text = "No videos"
-                    cvItemFirst.setOnClickListener(null)
+            if (videos.isNotEmpty()) {
+                val first = videos.first()
+                Glide.with(requireContext()).load(first.thumbnailUrl).into(imgThumbnail)
+                tvDuration.text = formatDuration(first.duration)
+                tvVideoCount.text = "${videos.size} videos"
+                cvItemFirst.setOnClickListener {
+                    val action = LikeVideosFragmentDirections
+                        .actionLikeVideosFragmentToVideoDetailsLikeFragment(first.videoId)
+                    view?.findNavController()?.navigate(action)
                 }
+            } else {
+                imgThumbnail.setImageResource(R.drawable.placeholder_thumbnail)
+                tvDuration.text = ""
+                tvVideoCount.text = "No videos"
+                cvItemFirst.setOnClickListener(null)
             }
         }
     }

@@ -55,9 +55,17 @@ class LibaryFragment: Fragment(R.layout.fragment_libary) {
     }
 
     private fun setupRecyclerView() {
-        recentVideoAdapter = RecentVideoAdapter{ onItemClick->
-
+        recentVideoAdapter = RecentVideoAdapter { recentVideo ->
+            viewLifecycleOwner.lifecycleScope.launch {
+                try {
+                    databaseHelper.insertRecentVideo(recentVideo) // ✅ recentVideo đã đúng kiểu
+                    Log.d("LibaryFragment", "Inserted recent video: ${recentVideo.videoTitle}")
+                } catch (e: Exception) {
+                    Log.e("LibaryFragment", "Error inserting recent video", e)
+                }
+            }
         }
+
         binding.rvRecentVideos.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = recentVideoAdapter

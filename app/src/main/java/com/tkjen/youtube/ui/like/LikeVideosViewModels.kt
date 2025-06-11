@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tkjen.youtube.data.local.DatabaseHelper
 import com.tkjen.youtube.data.local.entity.LikeVideo
+import com.tkjen.youtube.data.mapper.YoutubeMapper
 import com.tkjen.youtube.utils.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,24 +15,35 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class LikeVideosViewModels @Inject constructor(
+class LikeVideosViewModel @Inject constructor(
     private val databaseHelper: DatabaseHelper
-):ViewModel() {
-    private val _video = MutableStateFlow<Result<List<LikeVideo>>>(Result.Loading)
-    val video: StateFlow<Result<List<LikeVideo>>> = _video.asStateFlow()
+) : ViewModel() {
+
+    private val _videos = MutableStateFlow<Result<List<LikeVideo>>>(Result.Loading)
+    val videos: StateFlow<Result<List<LikeVideo>>> = _videos.asStateFlow()
 
     fun loadLikedVideos() {
-
         viewModelScope.launch {
-        _video.value = Result.Loading
             databaseHelper.getLikedVideos().collect { videos ->
-                if (videos.isEmpty()) {
-                    _video.value = Result.Error("No liked videos found")
+                _videos.value = if (videos.isEmpty()) {
+                    Result.Error("No liked videos found")
                 } else {
-                    _video.value = Result.Success(videos)
+                    Result.Success(videos)
                 }
             }
         }
+    }
 
+    fun deleteLikeVideo(video: LikeVideo) {
+        viewModelScope.launch {
+            databaseHelper.deleteLikeVideo(video)
+        }
+    }
+
+    fun insertRecentFromLike(video: LikeVideo) {
+        viewModelScope.launch {
+            val recent = YoutubeMapper.toRecentVideo(video)
+            databaseHelper.insertRecentVideo(recent)
+        }
     }
 }

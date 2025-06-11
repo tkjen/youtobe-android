@@ -24,8 +24,9 @@ class LikeVideoAdapter(private val onItemClick:(LikeVideo) ->Unit):
             parent,
             false
         )
-        return LikeVideoViewHolder(binding)
+        return LikeVideoViewHolder(binding, onItemClick) // TRUYỀN VÔ
     }
+
 
     override fun onBindViewHolder(holder: LikeVideoViewHolder, position: Int) {
         val video = getItem(position)
@@ -33,7 +34,8 @@ class LikeVideoAdapter(private val onItemClick:(LikeVideo) ->Unit):
     }
 
     class LikeVideoViewHolder(
-        private val binding: ItemLikeVideoBinding
+        private val binding: ItemLikeVideoBinding,
+        private val onItemClick: (LikeVideo) -> Unit
     ):
         RecyclerView.ViewHolder(binding.root) {
 
@@ -51,6 +53,7 @@ class LikeVideoAdapter(private val onItemClick:(LikeVideo) ->Unit):
                     .into(ivVideoThumbnail)
 
                 itemView.setOnClickListener {
+                    onItemClick(likeVideo)
                     val navController = itemView.findNavController()
                     val videoId = likeVideo.videoId
 

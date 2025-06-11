@@ -31,6 +31,8 @@ interface YoutubeDao {
     @Query("SELECT * FROM like_videos WHERE videoId = :videoId LIMIT 1")
     suspend fun getLikedVideoById(videoId: String): LikeVideo?
 
+    @Query("SELECT * FROM recent_videos WHERE videoId = :videoId LIMIT 1")
+    suspend fun getVideoById(videoId: String): RecentVideo?
     @Query("DELETE FROM like_videos WHERE videoId = :videoId")
     suspend fun deleteLikeVideo(videoId: String)
 
@@ -42,5 +44,7 @@ interface YoutubeDao {
 
     @Query("DELETE FROM like_videos")
     suspend fun clearAllLikedVideos()
+    @Delete
+    suspend fun deleteVideoRecent(video: RecentVideo)
 
 }

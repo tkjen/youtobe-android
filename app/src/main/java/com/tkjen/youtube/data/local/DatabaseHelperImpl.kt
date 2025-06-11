@@ -11,9 +11,12 @@ class DatabaseHelperImpl @Inject constructor(
     private val appDatabase: AppDatabase,
     private val videoDao: YoutubeDao
 ) : DatabaseHelper  {
+
     override suspend fun insertRecentVideo(video: RecentVideo) {
-        videoDao.insert(video)
+        val updated = video.copy(lastViewed = System.currentTimeMillis())
+        videoDao.insert(updated) // tự động ghi đè nếu videoId trùng
     }
+
 
     override fun getRecentVideos(): Flow<List<RecentVideo>> {
         return videoDao.getRecentVideos()

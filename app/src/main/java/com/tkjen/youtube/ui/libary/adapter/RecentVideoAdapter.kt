@@ -12,6 +12,7 @@ import com.tkjen.youtube.data.model.VideoItem
 import com.tkjen.youtube.databinding.ItemRecentVideoBinding
 import com.bumptech.glide.Glide
 import com.tkjen.youtube.R
+import com.tkjen.youtube.data.local.entity.LikeVideo
 import com.tkjen.youtube.ui.libary.adapter.RecentVideoDiffCallback
 import com.tkjen.youtube.utils.formatDuration
 
@@ -25,7 +26,7 @@ class RecentVideoAdapter(
             parent,
             false
         )
-        return RecentVideoViewHolder(binding)
+        return RecentVideoViewHolder(binding, onItemClick) // TRUYỀN VÔ
     }
 
     override fun onBindViewHolder(holder: RecentVideoViewHolder, position: Int) {
@@ -34,8 +35,8 @@ class RecentVideoAdapter(
     }
 
     class RecentVideoViewHolder(
-        private val binding: ItemRecentVideoBinding
-
+        private val binding: ItemRecentVideoBinding,
+        private val onItemClick: (RecentVideo) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(recentVideo: RecentVideo) {
@@ -51,6 +52,7 @@ class RecentVideoAdapter(
                     .into(ivVideoThumbnail)
 
                 itemView.setOnClickListener {
+                    onItemClick(recentVideo)
                     val navController = itemView.findNavController()
                     val videoId = recentVideo.videoId
 
