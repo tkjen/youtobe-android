@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class LikeVideosViewModel @Inject constructor(
+class LikeVideosViewModels @Inject constructor(
     private val databaseHelper: DatabaseHelper
 ) : ViewModel() {
 

@@ -1,7 +1,6 @@
 package com.tkjen.youtube.ui.like
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.tkjen.youtube.R
-import com.tkjen.youtube.data.local.DatabaseHelper
 import com.tkjen.youtube.data.local.entity.LikeVideo
-import com.tkjen.youtube.data.mapper.YoutubeMapper
 import com.tkjen.youtube.databinding.FragmentLikeVideosBinding
 import com.tkjen.youtube.ui.like.adapter.LikeVideoAdapter
 import com.tkjen.youtube.utils.Result
@@ -24,15 +21,13 @@ import com.tkjen.youtube.utils.SwipeToDeleteCallback
 import com.tkjen.youtube.utils.formatDuration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class LikeVideosFragment : Fragment(R.layout.fragment_like_videos) {
 
     private lateinit var binding: FragmentLikeVideosBinding
-    private val viewModel: LikeVideosViewModel by viewModels()
+    private val viewModel: LikeVideosViewModels by viewModels()
     private lateinit var likeVideoAdapter: LikeVideoAdapter
 
     override fun onCreateView(
