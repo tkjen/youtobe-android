@@ -1,11 +1,10 @@
-package com.tkjen.youtube.data.repository
+package com.tkjen.youtube.repository
 
 import android.util.Log
 import com.tkjen.youtube.data.api.YoutubeApiService
 import com.tkjen.youtube.data.model.VideoItem
 import com.tkjen.youtube.data.model.VideoListResponse
 import com.tkjen.youtube.data.model.YoutubeResponse
-import com.tkjen.youtube.data.model.SearchItem
 import javax.inject.Inject
 import javax.inject.Named
 

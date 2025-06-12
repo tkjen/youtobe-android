@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tkjen.youtube.data.model.VideoItem
-import com.tkjen.youtube.data.repository.YoutubeRepository
+import com.tkjen.youtube.repository.YoutubeRepository
 import com.tkjen.youtube.utils.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
