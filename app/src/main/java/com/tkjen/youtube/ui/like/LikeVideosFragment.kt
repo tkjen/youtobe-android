@@ -72,12 +72,13 @@ class LikeVideosFragment : Fragment(R.layout.fragment_like_videos) {
             viewModel.videos.collectLatest { result ->
                 when (result) {
                     is Result.Loading -> { /* show loading UI if needed */ }
-                    is Result.Error -> { /* show error UI */ }
                     is Result.Success -> {
                         val videos = result.data
                         likeVideoAdapter.submitList(videos)
                         updateUi(videos)
                     }
+                    is Result.Error -> { /* show error UI */ }
+
                 }
             }
         }

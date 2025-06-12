@@ -17,13 +17,10 @@ import com.tkjen.youtube.R
 import com.tkjen.youtube.data.local.DatabaseHelper
 import com.tkjen.youtube.data.mapper.YoutubeMapper
 import com.tkjen.youtube.data.model.VideoItem
-import com.tkjen.youtube.databinding.FragmentLikeVideosBinding
-import com.tkjen.youtube.databinding.FragmentVideoDetailsBinding
 import com.tkjen.youtube.databinding.FragmentVideoDetailsLikeBinding
 import com.tkjen.youtube.ui.home.adapter.VideoAdapter
 import com.tkjen.youtube.ui.like.adapter.LikeVideoAdapter
 import com.tkjen.youtube.ui.video_details.VideoDetailsFragmentArgs
-import com.tkjen.youtube.ui.video_details.VideoDetailsViewModel
 import com.tkjen.youtube.utils.Result
 import com.tkjen.youtube.utils.formatTimeAgo
 import com.tkjen.youtube.utils.formatViewCount
