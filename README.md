@@ -1,140 +1,85 @@
 # YouTube Clone Android App
 
-A feature-rich YouTube clone Android application built with Kotlin, following modern Android development practices and clean architecture principles.
+Ứng dụng Android mô phỏng YouTube được xây dựng bằng Kotlin, sử dụng kiến trúc sạch và các thư viện hiện đại.
 
-## Features
+## Chức Năng Chính
 
-### Core Features
-- 📱 Video browsing with categories
-- 🎥 YouTube Shorts support
-- 🔍 Video search functionality
-- 📊 Channel statistics
-- 🎨 Theme support (Light/Dark/System)
-- 💾 Local data persistence
-- 🔄 Pull-to-refresh
-- 👆 Swipe-to-delete functionality
+### 1. Trang Chủ (Home)
+- Xem video theo danh mục (All, Music, Gaming, Sports, News)
+- Hiển thị video phổ biến
+- Tìm kiếm video
+- Xem thông tin kênh
 
-### UI/UX Features
-- Material Design components
-- Bottom navigation
-- Category tabs with ViewPager2
-- RecyclerView for video lists
-- Swipe gestures
-- Responsive layout
-- Theme switching
+### 2. Shorts
+- Xem video ngắn
+- Vuốt lên/xuốt để xem video tiếp theo
+- Tải thêm video khi cuộn
 
-## Technical Stack
+### 3. Thư Viện (Library)
+- Lưu trữ video đã xem
+- Quản lý video yêu thích
+- Vuốt để xóa video
 
-### Architecture
-- Clean Architecture
-- MVVM (Model-View-ViewModel) pattern
-- Repository pattern
-- Dependency Injection with Hilt
+### 4. Cài Đặt (Settings)
+- Chuyển đổi giao diện (Sáng/Tối/Hệ thống)
+- Quản lý tài khoản
+- Cài đặt ứng dụng
 
-### Libraries & Technologies
-- **Language**: Kotlin
-- **Minimum SDK**: 24 (Android 7.0)
-- **Target SDK**: 35 (Android 15)
-- **UI Components**:
-  - Material Design
-  - Navigation Component
-  - ViewPager2
-  - RecyclerView
-  - Shimmer for loading effects
-  - SwipeRevealLayout
+### 5. Chi Tiết Video
+- Xem video
+- Xem thông tin video
+- Xem thống kê kênh
+- Tương tác với video
 
-### Dependencies
-- **Networking**:
-  - Retrofit for API calls
-  - OkHttp for HTTP client
-  - YouTube Player API integration
+## Công Nghệ Sử Dụng
 
-- **Data Management**:
-  - Room for local database
-  - Coroutines for async operations
-  - LiveData and ViewModel
-  - Flow for reactive programming
+- **Ngôn ngữ**: Kotlin
+- **Kiến trúc**: Clean Architecture + MVVM
+- **Thư viện chính**:
+  - Hilt: Tiêm phụ thuộc
+  - Retrofit: Gọi API YouTube
+  - Room: Lưu trữ local
+  - Coroutines: Xử lý bất đồng bộ
+  - Navigation: Điều hướng
+  - ViewPager2: Chuyển đổi danh mục
+  - Glide: Tải ảnh
+  - Material Design: Giao diện
 
-- **Image Loading**:
-  - Glide for image loading and caching
-
-- **Dependency Injection**:
-  - Hilt for dependency injection
-
-## Project Structure
+## Cấu Trúc Dự Án
 
 ```
 app/
-├── src/
-│   ├── main/
-│   │   ├── java/com/tkjen/youtube/
-│   │   │   ├── data/
-│   │   │   │   ├── api/           # API interfaces and models
-│   │   │   │   ├── local/         # Room database
-│   │   │   │   ├── mapper/        # Data mappers
-│   │   │   │   ├── model/         # Data models
-│   │   │   │   └── repository/    # Repository implementations
-│   │   │   ├── di/                # Dependency injection
-│   │   │   ├── domain/            # Business logic
-│   │   │   ├── ui/                # UI components
-│   │   │   │   ├── home/          # Home screen
-│   │   │   │   ├── shorts/        # Shorts screen
-│   │   │   │   ├── library/       # Library screen
-│   │   │   │   ├── settings/      # Settings screen
-│   │   │   │   └── video_details/ # Video details screen
-│   │   │   └── utils/             # Utility classes
-│   │   └── res/                   # Resources
+├── data/           # Tầng dữ liệu
+│   ├── api/        # API YouTube
+│   ├── local/      # Database local
+│   ├── model/      # Model dữ liệu
+│   └── repository/ # Repository
+├── di/             # Dependency Injection
+├── domain/         # Business Logic
+├── ui/             # Giao diện
+│   ├── home/       # Trang chủ
+│   ├── shorts/     # Shorts
+│   ├── libary/     # Thư viện
+│   ├── settings/   # Cài đặt
+│   └── video_details/ # Chi tiết video
+└── utils/          # Tiện ích
 ```
 
-## Key Components
+## Cài Đặt
 
-### 1. Application
-- `YoutubeCloneApplication`: Main application class
-- Theme management
-- Application-wide configurations
-
-### 2. Data Layer
-- YouTube API integration
-- Local database with Room
-- Repository pattern implementation
-- Data models and mappers
-
-### 3. UI Layer
-- Activities and Fragments
-- ViewModels
-- Adapters for RecyclerViews
-- Custom views and components
-
-### 4. Utils
-- Theme management
-- Format utilities (views, time, duration)
-- Swipe-to-delete implementation
-- Result wrapper for API responses
-
-## API Integration
-
-The app integrates with YouTube Data API v3, providing:
-- Video details
-- Popular videos
-- Category-based search
-- Channel statistics
-- Shorts videos
-
-## Setup
-
-1. Clone the repository
-2. Add your YouTube API key in `local.properties`:
+1. Clone repository
+2. Thêm API key YouTube vào `local.properties`:
    ```
    YOUTUBE_API_KEY=your_api_key_here
    ```
-3. Build and run the application
+3. Build và chạy ứng dụng
 
-## Requirements
+## Yêu Cầu
 
-- Android Studio Arctic Fox or newer
+- Android Studio Arctic Fox trở lên
 - JDK 11
 - Android SDK 24+
-- YouTube Data API v3 key
+- API key YouTube Data API v3
 
 ## Contributing
 
