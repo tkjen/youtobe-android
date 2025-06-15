@@ -1,97 +1,70 @@
+
+
+---
+
 # YouTube Clone Android App
 
-Ứng dụng Android mô phỏng YouTube được xây dựng bằng Kotlin, sử dụng kiến trúc sạch và các thư viện hiện đại.
+An Android application that mimics YouTube, built with Kotlin using clean architecture and modern libraries.
 
-## Chức Năng Chính
+## Main Features
 
-### 1. Trang Chủ (Home)
-- Xem video theo danh mục (All, Music, Gaming, Sports, News)
-- Hiển thị video phổ biến
-- Tìm kiếm video
-- Xem thông tin kênh
+### 1. Home
+- Watch videos by category (All, Music, Gaming, Sports, News)
+- Display popular/trending videos
+- Search for videos
+- View channel information
 
 ### 2. Shorts
-- Xem video ngắn
-- Vuốt lên/xuốt để xem video tiếp theo
-- Tải thêm video khi cuộn
+- Watch short videos
+- Swipe up/down to watch the next video
+- Load more videos on scroll
 
-### 3. Thư Viện (Library)
-- Lưu trữ video đã xem
-- Quản lý video yêu thích
-- Vuốt để xóa video
+### 3. Library
+- View watch history
+- Manage liked videos
+- Swipe to delete videos
 
-### 4. Cài Đặt (Settings)
-- Chuyển đổi giao diện (Sáng/Tối/Hệ thống)
-- Quản lý tài khoản
-- Cài đặt ứng dụng
+### 4. Settings
+- Switch theme (Light/Dark/System)
+- Manage account
+- App settings
 
-### 5. Chi Tiết Video
-- Xem video
-- Xem thông tin video
-- Xem thống kê kênh
-- Tương tác với video
+### 5. Video Details
+- Watch the video
+- View video information
+- View channel statistics
+- Interact with the video (like, comment, etc.)
 
-## Công Nghệ Sử Dụng
+## Tech Stack
 
-- **Ngôn ngữ**: Kotlin
-- **Kiến trúc**: Clean Architecture + MVVM
-- **Thư viện chính**:
-  - Hilt: Tiêm phụ thuộc
-  - Retrofit: Gọi API YouTube
-  - Room: Lưu trữ local
-  - Coroutines: Xử lý bất đồng bộ
-  - Navigation: Điều hướng
-  - ViewPager2: Chuyển đổi danh mục
-  - Glide: Tải ảnh
-  - Material Design: Giao diện
+- **Language**: Kotlin
+- **Architecture**: Clean Architecture + MVVM
+- **Core Libraries**:
+  - Hilt: Dependency Injection
+  - Retrofit: YouTube API calls
+  - Room: Local storage
+  - Coroutines: Asynchronous processing
+  - Navigation: Screen navigation
+  - ViewPager2: Switching between categories
+  - Glide: Image loading
+  - Material Design: UI components
 
-## Cấu Trúc Dự Án
+## Project Structure
 
 ```
 app/
-├── data/           # Tầng dữ liệu
-│   ├── api/        # API YouTube
-│   ├── local/      # Database local
-│   ├── model/      # Model dữ liệu
-│   └── repository/ # Repository
+├── data/           # Data Layer
+│   ├── api/        # YouTube API
+│   ├── local/      # Local Database
+│   ├── model/      # Data Models
+│   └── repository/ # Repositories
 ├── di/             # Dependency Injection
-├── domain/         # Business Logic
-├── ui/             # Giao diện
-│   ├── home/       # Trang chủ
-│   ├── shorts/     # Shorts
-│   ├── libary/     # Thư viện
-│   ├── settings/   # Cài đặt
-│   └── video_details/ # Chi tiết video
-└── utils/          # Tiện ích
+├── domain/         # Domain Layer (Business Logic)
+├── ui/             # UI Layer (Views)
+│   ├── home/       # Home Screen
+│   ├── shorts/     # Shorts Screen
+│   ├── library/    # Library Screen
+│   ├── settings/   # Settings Screen
+│   └── video_details/ # Video Details Screen
+└── utils/          # Utility classes
 ```
-
-## Cài Đặt
-
-1. Clone repository
-2. Thêm API key YouTube vào `local.properties`:
-   ```
-   YOUTUBE_API_KEY=your_api_key_here
-   ```
-3. Build và chạy ứng dụng
-
-## Yêu Cầu
-
-- Android Studio Arctic Fox trở lên
-- JDK 11
-- Android SDK 24+
-- API key YouTube Data API v3
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
-
-
-## Acknowledgments
-
-- YouTube Data API v3
-- Android Jetpack libraries
-- Material Design components 
