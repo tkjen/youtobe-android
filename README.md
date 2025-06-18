@@ -1,7 +1,4 @@
-
-
 ---
-
 # YouTube Clone Android App
 
 An Android application that mimics YouTube, built with Kotlin using clean architecture and modern libraries.
@@ -9,10 +6,10 @@ An Android application that mimics YouTube, built with Kotlin using clean archit
 ## Main Features
 
 ### 1. Home
-- Watch videos by category (All, Music, Gaming, Sports, News)
-- Display popular/trending videos
-- Search for videos
-- View channel information
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/0eb47cda-2e96-4c29-94d6-eb301cfb220e" alt="Home Screen Recording" width="300">
+</div>
+
 
 ### 2. Shorts
 - Watch short videos
